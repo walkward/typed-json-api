@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "strictNullChecks": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "removeComments": true,
+    "noUnusedLocals": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "outDir": "dist",
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "typeRoots": ["node_modules/@types"],
+    "baseUrl": ".",
+    "lib": [
+      "es2015.promise",
+      "es2017",
+      "dom"
+    ],
+  },
+  "include": [
+    "src/**/**.ts",
+    "test/**/**.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
