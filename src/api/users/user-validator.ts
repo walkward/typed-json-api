@@ -1,20 +1,35 @@
-import * as Joi from "joi";
+import * as Boom from 'boom'
+import { Deserializer } from 'jsonapi-serializer';
+import { validate, ValidationError } from 'class-validator'
 
-export const createUserModel = Joi.object().keys({
-    email: Joi.string().email().trim().required(),
-    name: Joi.string().required(),
-    password: Joi.string().trim().required()
-});
+import { User } from "../../entity/User";
+import { IResource } from "../../types";
 
-export const updateUserModel = Joi.object().keys({
-    email: Joi.string().email().trim(),
-    name: Joi.string(),
-    password: Joi.string().trim()
-});
+const deserializer = new Deserializer()
 
-export const loginUserModel = Joi.object().keys({
-    email: Joi.string().email().required(),
-    password: Joi.string().trim().required()
-});
+const combineValidationMessages = (errors: ValidationError[]): string => {
+  return errors.reduce((prev: string, curr: any) => {
+    return prev += `${Object.values(curr.constraints).join('. ')}. `
+  }, '');
+}
 
-export const jwtValidator = Joi.object({'authorization': Joi.string().required()}).unknown();
+export async function createUser(value: IResource) {
+  try {
+    let data = await deserializer.deserialize(value)
+
+    let user: any  = new User();
+    Object.entries(data).forEach(([key, value]: any ) => {
+      user[key] = value;
+    })
+
+    return validate(user).then(errors => {
+      if (errors.length > 0) {
+        throw Boom.badData(combineValidationMessages(errors), errors);
+      } else {
+        return user;
+      }
+    });
+  } catch (error) {
+    throw Boom.boomify(error);
+  }
+}

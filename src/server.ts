@@ -1,12 +1,11 @@
 import * as Hapi from 'hapi';
-import { IServerConfigurations } from './config';
-import { IPlugin } from './types/plugins';
+
+import * as Users from './api/users'
+import { IServerConfigurations, IPlugin } from './types';
 import { AppError } from './utils/errors';
 import logging from './utils/logging';
 
-export async function init(
-  configs: IServerConfigurations,
-): Promise<Hapi.Server> {
+export async function init(configs: IServerConfigurations): Promise<Hapi.Server> {
   try {
     const server = new Hapi.Server({
       debug: { request: ['error'] },
@@ -39,11 +38,9 @@ export async function init(
     });
 
     await Promise.all(pluginPromises);
-
     logging.info('All plugins registered successfully.');
 
-    logging.info('Register Routes');
-    // Analyze.init(server, configs);
+    Users.init(server);
     logging.info('Routes registered sucessfully.');
 
     return server;

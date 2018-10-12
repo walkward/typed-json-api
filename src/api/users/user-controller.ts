@@ -1,79 +1,80 @@
 import * as Hapi from "hapi";
-import * as Boom from "boom";
-import * as Jwt from "jsonwebtoken";
-import { IUser } from "./user";
-import { IDatabase } from "../../database";
-import { IServerConfigurations } from "../../config";
-import { IRequest, ILoginRequest } from "../../interfaces/request";
+import * as Boom from 'boom'
+import { getConnection } from "typeorm";
+import { Serializer } from 'jsonapi-serializer';
+
+import { IRequest, IResource } from "../../types";
+import { User } from "../../entity/User";
 
 export default class UserController {
-  private database: IDatabase;
-  private configs: IServerConfigurations;
-
-  constructor(configs: IServerConfigurations, database: IDatabase) {
-    this.database = database;
-    this.configs = configs;
-  }
-
-  private generateToken(user: IUser) {
-    const jwtSecret = this.configs.jwtSecret;
-    const jwtExpiration = this.configs.jwtExpiration;
-    const payload = { id: user._id };
-
-    return Jwt.sign(payload, jwtSecret, { expiresIn: jwtExpiration });
-  }
-
-  public async loginUser(request: ILoginRequest, h: Hapi.ResponseToolkit) {
-    const { email, password } = request.payload;
-
-    let user: IUser = await this.database.userModel.findOne({ email: email });
-
-    if (!user) {
-      return Boom.unauthorized("User does not exists.");
-    }
-
-    if (!user.validatePassword(password)) {
-      return Boom.unauthorized("Password is invalid.");
-    }
-
-    return { token: this.generateToken(user) };
+  private serialize(data: any = {}): IResource {
+    const attributes = Object.keys(data);
+    const serializer = new Serializer('users', { attributes })
+    return serializer.serialize(data)
   }
 
   public async createUser(request: IRequest, h: Hapi.ResponseToolkit) {
     try {
-      let user: any = await this.database.userModel.create(request.payload);
-      return h.response({ token: this.generateToken(user) }).code(201);
+      const { payload }: any = request;
+      const { raw: [raw] } = await getConnection()
+        .createQueryBuilder()
+        .insert()
+        .into(User)
+        .values(payload)
+        .execute();
+
+      return h.response(this.serialize(raw)).code(201);
     } catch (error) {
-      return Boom.badImplementation(error);
+      return Boom.boomify(error)
     }
   }
 
   public async updateUser(request: IRequest, h: Hapi.ResponseToolkit) {
-    const id = request.auth.credentials.id;
-
     try {
-      let user: IUser = await this.database.userModel.findByIdAndUpdate(
-        id,
-        { $set: request.payload },
-        { new: true }
-      );
-      return user;
+      const { id } = request.params;
+      const { payload }: any = request;
+      await getConnection()
+        .createQueryBuilder()
+        .update(User)
+        .set(payload)
+        .where("id = :id", { id })
+        .execute();
+
+      return h.response().code(200);
     } catch (error) {
-      return Boom.badImplementation(error);
+      return Boom.boomify(error)
     }
   }
 
   public async deleteUser(request: IRequest, h: Hapi.ResponseToolkit) {
-    const id = request.auth.credentials.id;
-    let user: IUser = await this.database.userModel.findByIdAndRemove(id);
+    try {
+      const { id } = request.params;
+      await getConnection()
+        .createQueryBuilder()
+        .delete()
+        .from(User)
+        .where("id = :id", { id })
+        .execute();
 
-    return user;
+      return h.response().code(200);
+    } catch (error) {
+      return Boom.boomify(error)
+    }
   }
 
-  public async infoUser(request: IRequest, h: Hapi.ResponseToolkit) {
-    const id = request.auth.credentials.id;
-    let user: IUser = await this.database.userModel.findById(id);
-
-    return user;
+  public async getUser(request: IRequest, h: Hapi.ResponseToolkit) {
+    try {
+      const { id } = request.params;
+      const user = await getConnection()
+        .createQueryBuilder()
+        .select("user")
+        .from(User, "user")
+        .where("user.id = :id", { id })
+        .getOne();
+      console.log(request)
+      return h.response(this.serialize(user)).code(200);
+    } catch(error) {
+      return Boom.boomify(error)
+    }
   }
 }

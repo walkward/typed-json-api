@@ -4,6 +4,8 @@
 
 import * as nconf from 'nconf';
 import * as path from 'path';
+import { IServerConfigurations } from '../types'
+import { ConnectionOptions } from "typeorm";
 
 // Read Configurations
 const configs = new nconf.Provider({
@@ -15,14 +17,10 @@ const configs = new nconf.Provider({
   },
 });
 
-export interface IServerConfigurations {
-  port: number;
-  plugins: string[];
-  jwtSecret: string;
-  jwtExpiration: string;
-  routePrefix: string;
-}
-
 export function getServerConfigs(): IServerConfigurations {
   return configs.get('server');
+}
+
+export function getDatabaseConfigs(): ConnectionOptions {
+  return configs.get('database');
 }

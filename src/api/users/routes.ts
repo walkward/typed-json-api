@@ -1,29 +1,21 @@
 import * as Hapi from "hapi";
-import * as Joi from "joi";
 import UserController from "./user-controller";
-import { UserModel } from "./user";
 import * as UserValidator from "./user-validator";
-import { IDatabase } from "../../database";
-import { IServerConfigurations } from "../../config";
 
-export default function(
-  server: Hapi.Server,
-  serverConfigs: IServerConfigurations,
-  database: IDatabase
-) {
-  const userController = new UserController(serverConfigs, database);
+export default function(server: Hapi.Server) {
+  const userController = new UserController();
   server.bind(userController);
 
   server.route({
     method: "GET",
-    path: "/users/info",
+    path: "/users/{id}",
     options: {
-      handler: userController.infoUser,
-      auth: "jwt",
+      handler: userController.getUser,
+      // auth: "jwt",
       tags: ["api", "users"],
       description: "Get user info.",
       validate: {
-        headers: UserValidator.jwtValidator
+        // headers: UserValidator.jwtValidator
       },
       plugins: {
         "hapi-swagger": {
@@ -42,14 +34,14 @@ export default function(
 
   server.route({
     method: "DELETE",
-    path: "/users",
+    path: "/users/{id}",
     options: {
       handler: userController.deleteUser,
-      auth: "jwt",
+      // auth: "jwt",
       tags: ["api", "users"],
       description: "Delete current user.",
       validate: {
-        headers: UserValidator.jwtValidator
+        // headers: UserValidator.jwtValidator
       },
       plugins: {
         "hapi-swagger": {
@@ -68,15 +60,15 @@ export default function(
 
   server.route({
     method: "PUT",
-    path: "/users",
+    path: "/users/{id}",
     options: {
       handler: userController.updateUser,
-      auth: "jwt",
+      // auth: "jwt",
       tags: ["api", "users"],
       description: "Update current user info.",
       validate: {
-        payload: UserValidator.updateUserModel,
-        headers: UserValidator.jwtValidator
+        payload: UserValidator.createUser,
+        // headers: UserValidator.jwtValidator
       },
       plugins: {
         "hapi-swagger": {
@@ -98,40 +90,18 @@ export default function(
     path: "/users",
     options: {
       handler: userController.createUser,
-      auth: false,
+      // auth: false,
       tags: ["api", "users"],
       description: "Create a user.",
       validate: {
-        payload: UserValidator.createUserModel
+        payload: UserValidator.createUser,
+        // headers: UserValidator.jwtValidator,
       },
       plugins: {
         "hapi-swagger": {
           responses: {
             "201": {
               description: "User created."
-            }
-          }
-        }
-      }
-    }
-  });
-
-  server.route({
-    method: "POST",
-    path: "/users/login",
-    options: {
-      handler: userController.loginUser,
-      auth: false,
-      tags: ["api", "users"],
-      description: "Login a user.",
-      validate: {
-        payload: UserValidator.loginUserModel
-      },
-      plugins: {
-        "hapi-swagger": {
-          responses: {
-            "200": {
-              description: "User logged in."
             }
           }
         }

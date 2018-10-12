@@ -11,7 +11,9 @@
     "lint": "tslint src/**/*.ts"
   },
   "dependencies": {
+    "@gar/hapi-json-api": "3.0.2",
     "boom": "7.2.0",
+    "class-validator": "0.9.1",
     "dotenv": "6.0.0",
     "fs": "0.0.1-security",
     "good": "8.1.0",
@@ -22,6 +24,8 @@
     "hapi-swagger": "9.1.1",
     "inert": "5.1.0",
     "joi": "13.2.0",
+    "jsonapi-serializer": "3.6.0",
+    "lodash": "4.17.11",
     "nconf": "0.10.0",
     "path": "0.12.7",
     "pg": "7.5.0",
@@ -36,6 +40,7 @@
     "@types/hapi": "17.0.11",
     "@types/joi": "13.0.8",
     "@types/jsonwebtoken": "7.2.6",
+    "@types/lodash": "4.14.117",
     "@types/nconf": "0.0.37",
     "@types/node": "9.4.7",
     "@types/supertest": "2.0.6",
