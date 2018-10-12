@@ -1,26 +1,26 @@
-import { Entity, Column, ManyToMany, ManyToOne } from "typeorm";
+import { Column, Entity, ManyToMany, ManyToOne } from 'typeorm';
 
-import { Base } from './Base'
-import { Collection } from './Collection'
-import { Folder } from './Folder'
+import { Base } from './Base';
+import { Collection } from './Collection';
+import { Folder } from './Folder';
 
 @Entity()
 export class Asset extends Base {
-    @Column()
-    name: string;
+  @Column()
+  public name: string;
 
-    @Column()
-    location: string;
+  @Column()
+  public location: string;
 
-    @Column()
-    fileType: string;
+  @Column()
+  public fileType: string;
 
-    @Column()
-    success: boolean;
+  @Column()
+  public success: boolean;
 
-    @ManyToMany(type => Collection, collection => collection.assets)
-    collections: Collection[];
+  @ManyToMany((type) => Collection, (collection) => collection.assets)
+  public collections: Collection[];
 
-    @ManyToOne(type => Folder, folder => folder.folders)
-    folder: Folder;
+  @ManyToOne((type) => Folder, (folder) => folder.folders)
+  public folder: Folder;
 }

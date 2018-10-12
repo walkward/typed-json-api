@@ -11,6 +11,7 @@ services:
       - /usr/app/node_modules
     ports:
       - "5000:5000"
+
   postgres:
     container_name: clique-api-postgres
     image: postgres:9.6.2-alpine
@@ -21,5 +22,17 @@ services:
     ports:
      - "5432:5432"
 
+  redis:
+    container_name: clique-api-redis
+    image: redis:4.0.8-alpine
+    restart: always
+    volumes:
+      - redis-data:/data
+    ports:
+      - "6379:6379"
+    sysctls:
+      - net.core.somaxconn=65535
+
 volumes:
   postgres-data:
+  redis-data:

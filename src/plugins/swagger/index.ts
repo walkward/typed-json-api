@@ -1,4 +1,5 @@
 import * as Hapi from 'hapi';
+
 import { IPlugin } from '../../types';
 import { AppError } from '../../utils/errors';
 

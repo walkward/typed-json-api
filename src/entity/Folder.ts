@@ -1,23 +1,23 @@
-import { Entity, Column, ManyToOne, OneToMany } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
-import { Base } from './Base'
-import { Asset } from './Asset'
-import { Collection } from './Collection'
+import { Asset } from './Asset';
+import { Base } from './Base';
+import { Collection } from './Collection';
 
 @Entity()
 export class Folder extends Base {
-    @Column()
-    name: string;
+  @Column()
+  public name: string;
 
-    @OneToMany(type => Collection, collection => collection.folder)
-    collections: Collection[];
+  @OneToMany((type) => Collection, (collection) => collection.folder)
+  public collections: Collection[];
 
-    @ManyToOne(type => Folder, folder => folder.folders)
-    folder: Folder;
+  @ManyToOne((type) => Folder, (folder) => folder.folders)
+  public folder: Folder;
 
-    @OneToMany(type => Folder, folder => folder.folder)
-    folders: Folder[];
+  @OneToMany((type) => Folder, (folder) => folder.folder)
+  public folders: Folder[];
 
-    @OneToMany(type => Asset, asset => asset.folder)
-    assets: Asset[];
+  @OneToMany((type) => Asset, (asset) => asset.folder)
+  public assets: Asset[];
 }

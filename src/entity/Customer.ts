@@ -1,21 +1,21 @@
-import { Entity, Column, OneToMany } from "typeorm";
+import { Column, Entity, OneToMany } from 'typeorm';
 
-import { Base } from './Base'
-import { Project } from './Project'
-import { Group } from './Group'
-import { User } from './User'
+import { Base } from './Base';
+import { Group } from './Group';
+import { Project } from './Project';
+import { User } from './User';
 
 @Entity()
 export class Customer extends Base {
-    @Column()
-    name: string;
+  @Column()
+  public name: string;
 
-    @OneToMany(type => User, user => user.customer)
-    users: User[];
+  @OneToMany((type) => User, (user) => user.customer)
+  public users: User[];
 
-    @OneToMany(type => Group, group => group.customer)
-    groups: Group[];
+  @OneToMany((type) => Group, (group) => group.customer)
+  public groups: Group[];
 
-    @OneToMany(type => Project, project => project.customer)
-    projects: Project[];
+  @OneToMany((type) => Project, (project) => project.customer)
+  public projects: Project[];
 }

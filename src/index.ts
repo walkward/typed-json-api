@@ -5,23 +5,23 @@
 import * as dotenv from 'dotenv';
 
 import * as Configs from './config';
-import './utils/uncaught';
-import * as Server from './server';
 import * as Database from './database';
-import logging from './utils/logging';
+import * as Server from './server';
 import { AppError } from './utils/errors';
+import logging from './utils/logging';
+import './utils/uncaught';
 
 logging.info(`Running environment ${process.env.NODE_ENV}`);
 
 // Loading environment variables
 dotenv.config();
 
-const start = async ({ serverConfigs, databaseConfigs }: any) => {
+const start = async (configs: any) => {
   try {
-    await Database.init(databaseConfigs);
-    logging.info("Successfully connected to db...");
+    await Database.init(configs.databaseConfigs);
+    logging.info('Successfully connected to db...');
 
-    const server = await Server.init(serverConfigs);
+    const server = await Server.init(configs.serverConfigs);
     await server.start();
     logging.info('Server running at:', server.info.uri);
   } catch (error) {

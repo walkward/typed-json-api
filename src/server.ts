@@ -1,7 +1,7 @@
 import * as Hapi from 'hapi';
 
-import * as Users from './api/users'
-import { IServerConfigurations, IPlugin } from './types';
+import * as Users from './api/users';
+import { IPlugin, IServerConfigurations } from './types';
 import { AppError } from './utils/errors';
 import logging from './utils/logging';
 

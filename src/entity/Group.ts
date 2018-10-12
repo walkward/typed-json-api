@@ -1,22 +1,22 @@
-import { Entity, Column, ManyToMany, ManyToOne, OneToMany, JoinTable } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
 
-import { Base } from './Base'
-import { Collection } from './Collection'
-import { User } from './User'
-import { Customer } from './Customer'
+import { Base } from './Base';
+import { Collection } from './Collection';
+import { Customer } from './Customer';
+import { User } from './User';
 
 @Entity()
 export class Group extends Base {
-    @Column()
-    name: string;
+  @Column()
+  public name: string;
 
-    @OneToMany(type => Collection, collection => collection.group)
-    collections: Collection[];
+  @OneToMany((type) => Collection, (collection) => collection.group)
+  public collections: Collection[];
 
-    @ManyToMany(type => User, user => user.groups)
-    @JoinTable()
-    users: User[];
+  @ManyToMany((type) => User, (user) => user.groups)
+  @JoinTable()
+  public users: User[];
 
-    @ManyToOne(type => Customer, customer => customer.groups)
-    customer: Customer;
+  @ManyToOne((type) => Customer, (customer) => customer.groups)
+  public customer: Customer;
 }

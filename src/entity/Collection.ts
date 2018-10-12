@@ -1,26 +1,26 @@
-import { Entity, Column, ManyToOne, ManyToMany, JoinTable } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne } from 'typeorm';
 
-import { Base } from './Base'
-import { Group } from './Group'
-import { User } from './User'
-import { Folder } from './Folder'
-import { Asset } from './Asset'
+import { Asset } from './Asset';
+import { Base } from './Base';
+import { Folder } from './Folder';
+import { Group } from './Group';
+import { User } from './User';
 
 @Entity()
 export class Collection extends Base {
-    @Column()
-    name: string;
+  @Column()
+  public name: string;
 
-    @ManyToMany(type => Asset, asset => asset.collections)
-    @JoinTable()
-    assets: Asset[];
+  @ManyToMany((type) => Asset, (asset) => asset.collections)
+  @JoinTable()
+  public assets: Asset[];
 
-    @ManyToOne(type => Folder, folder => folder.collections)
-    folder: Folder;
+  @ManyToOne((type) => Folder, (folder) => folder.collections)
+  public folder: Folder;
 
-    @ManyToOne(type => User, user => user.collections)
-    user: User;
+  @ManyToOne((type) => User, (user) => user.collections)
+  public user: User;
 
-    @ManyToOne(type => Group, group => group.collections)
-    group: Group;
+  @ManyToOne((type) => Group, (group) => group.collections)
+  public group: Group;
 }

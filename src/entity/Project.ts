@@ -1,19 +1,19 @@
-import { Entity, Column, ManyToOne, OneToOne, JoinColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 
-import { Base } from './Base'
-import { Customer } from './Customer'
+import { Base } from './Base';
+import { Customer } from './Customer';
 // import { User } from './User'
-import { Folder } from './Folder'
+import { Folder } from './Folder';
 
 @Entity()
 export class Project extends Base {
-    @Column()
-    name: string;
+  @Column()
+  public name: string;
 
-    @OneToOne(type => Folder)
-    @JoinColumn()
-    rootFolder: Folder;
+  @OneToOne((type) => Folder)
+  @JoinColumn()
+  public rootFolder: Folder;
 
-    @ManyToOne(type => Customer, customer => customer.projects)
-    customer: Customer;
+  @ManyToOne((type) => Customer, (customer) => customer.projects)
+  public customer: Customer;
 }

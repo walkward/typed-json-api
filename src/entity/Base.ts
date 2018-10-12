@@ -1,19 +1,19 @@
-import { PrimaryGeneratedColumn, Column, Generated, CreateDateColumn, UpdateDateColumn, VersionColumn } from "typeorm";
+import { Column, CreateDateColumn, Generated, PrimaryGeneratedColumn, UpdateDateColumn, VersionColumn } from 'typeorm';
 
 export abstract class Base {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  public sequence: number;
 
-    @Column()
-    @Generated("uuid")
-    uuid: string;
+  @Column()
+  @Generated('uuid')
+  public id: string;
 
-    @CreateDateColumn({ type: 'timestamp with time zone' })
-    created: Date;
+  @CreateDateColumn({ type: 'timestamp with time zone' })
+  public created: Date;
 
-    @UpdateDateColumn({ type: 'timestamp with time zone' })
-    modified: Date;
+  @UpdateDateColumn({ type: 'timestamp with time zone' })
+  public modified: Date;
 
-    @VersionColumn({ type: 'int' })
-    version: number;
+  @VersionColumn({ type: 'int' })
+  public version: number;
 }

@@ -1,17 +1,12 @@
-import * as Hapi from "hapi";
-import * as Boom from 'boom'
-import { getConnection } from "typeorm";
+import * as Boom from 'boom';
+import * as Hapi from 'hapi';
 import { Serializer } from 'jsonapi-serializer';
+import { getConnection } from 'typeorm';
 
-import { IRequest, IResource } from "../../types";
-import { User } from "../../entity/User";
+import { User } from '../../entity/User';
+import { IRequest, IResource } from '../../types';
 
 export default class UserController {
-  private serialize(data: any = {}): IResource {
-    const attributes = Object.keys(data);
-    const serializer = new Serializer('users', { attributes })
-    return serializer.serialize(data)
-  }
 
   public async createUser(request: IRequest, h: Hapi.ResponseToolkit) {
     try {
@@ -25,7 +20,7 @@ export default class UserController {
 
       return h.response(this.serialize(raw)).code(201);
     } catch (error) {
-      return Boom.boomify(error)
+      return Boom.boomify(error);
     }
   }
 
@@ -37,12 +32,12 @@ export default class UserController {
         .createQueryBuilder()
         .update(User)
         .set(payload)
-        .where("id = :id", { id })
+        .where('id = :id', { id })
         .execute();
 
       return h.response().code(200);
     } catch (error) {
-      return Boom.boomify(error)
+      return Boom.boomify(error);
     }
   }
 
@@ -53,12 +48,12 @@ export default class UserController {
         .createQueryBuilder()
         .delete()
         .from(User)
-        .where("id = :id", { id })
+        .where('id = :id', { id })
         .execute();
 
       return h.response().code(200);
     } catch (error) {
-      return Boom.boomify(error)
+      return Boom.boomify(error);
     }
   }
 
@@ -67,14 +62,20 @@ export default class UserController {
       const { id } = request.params;
       const user = await getConnection()
         .createQueryBuilder()
-        .select("user")
-        .from(User, "user")
-        .where("user.id = :id", { id })
+        .select('user')
+        .from(User, 'user')
+        .where('user.id = :id', { id })
         .getOne();
-      console.log(request)
+
       return h.response(this.serialize(user)).code(200);
-    } catch(error) {
-      return Boom.boomify(error)
+    } catch (error) {
+      return Boom.boomify(error);
     }
+  }
+
+  private serialize(data: any = {}): IResource {
+    const attributes = Object.keys(data);
+    const serializer = new Serializer('users', { attributes });
+    return serializer.serialize(data);
   }
 }
