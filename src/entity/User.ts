@@ -28,7 +28,7 @@ export class User extends Base {
   @IsString()
   @Length(8, 100)
   @Matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/, 'gm', {
-    message: 'Passwords must contain at least 1 uppercase letter, 1 lowercase letter,' +
+    message: 'Passwords must contain at least 1 uppercase letter, 1 lowercase letter, ' +
       '1 number and must have at least 8 characters.',
   })
   public password: string;

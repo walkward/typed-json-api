@@ -8,7 +8,6 @@ export class AppError extends Error {
   public isOperational: boolean;
   public name: string;
   public stack: string;
-  public original?: Error;
 
   constructor(message: string, isOperational: boolean, error?: Error) {
     super(message);
@@ -20,15 +19,13 @@ export class AppError extends Error {
     // Saving class name in the property of our custom error as a shortcut.
     this.name = this.constructor.name;
 
-    // The original error
-    this.original = error;
+    // Logging the original error
+    if (error && error instanceof AppError === false) {
+      logging.error(`Original Error: ${error.stack || error.message}`);
+    }
   }
 }
 
 export const handleError = (error: AppError | Error) => {
   logging.error(error.stack || error.message);
-  if (error instanceof AppError && error.original) {
-    logging.error('Original Error:');
-    logging.error(error.original.stack || error.original.message);
-  }
 };

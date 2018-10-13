@@ -1,10 +1,10 @@
 import * as Boom from 'boom';
 import { validate, ValidationError } from 'class-validator';
 import { Deserializer } from 'jsonapi-serializer';
+import { singular } from 'pluralize';
 
-import { User } from '../../entity/User';
+import entities from '../../entity';
 import RequestQuery from '../../models/RequestQuery';
-import { IResource } from '../../types';
 
 const deserializer = new Deserializer();
 
@@ -14,17 +14,17 @@ const combineValidationMessages = (errors: ValidationError[]): string => {
   }, '');
 };
 
-export async function validateUser(value: IResource) {
+export async function validateResource(value: any) {
   try {
-    let user = new User();
-    user = await deserializer.deserialize(value);
+    let resource = new entities[singular(value.data.type)]();
+    resource = await deserializer.deserialize(value);
 
-    const errors = await validate(user);
+    const errors = await validate(resource);
 
     if (errors.length > 0) {
       throw Boom.badData(combineValidationMessages(errors), errors);
     } else {
-      return user;
+      return resource;
     }
   } catch (error) {
     throw Boom.boomify(error);

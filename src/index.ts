@@ -3,6 +3,7 @@
  */
 
 import * as dotenv from 'dotenv';
+dotenv.config(); // tslint:disable-line
 
 import * as Configs from './config';
 import * as Database from './database';
@@ -13,25 +14,24 @@ import './utils/uncaught';
 
 logging.info(`Running environment ${process.env.NODE_ENV}`);
 
-// Loading environment variables
-dotenv.config();
-
-const start = async (configs: any) => {
+export const start = async () => {
   try {
-    await Database.init(configs.databaseConfigs);
+    // Starting Application Server
+    const serverConfigs = Configs.getServerConfigs();
+    const databaseConfigs = Configs.getDatabaseConfigs();
+
+    await Database.init(databaseConfigs);
     logging.info('Successfully connected to db...');
 
-    const server = await Server.init(configs.serverConfigs);
+    const server = await Server.init(serverConfigs);
     await server.start();
     logging.info('Server running at:', server.info.uri);
+
+    return server;
   } catch (error) {
     throw new AppError(error.message, false, error);
   }
 };
 
-// Starting Application Server
-const serverConfigs = Configs.getServerConfigs();
-const databaseConfigs = Configs.getDatabaseConfigs();
-
 // Start the server
-start({ serverConfigs, databaseConfigs });
+start();

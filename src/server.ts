@@ -1,6 +1,6 @@
 import * as Hapi from 'hapi';
 
-import * as Users from './api/users';
+import * as Resources from './api/resources';
 import { IPlugin, IServerConfigurations } from './types';
 import { AppError } from './utils/errors';
 import logging from './utils/logging';
@@ -9,7 +9,7 @@ export async function init(configs: IServerConfigurations): Promise<Hapi.Server>
   try {
     const server = new Hapi.Server({
       debug: { request: ['error'] },
-      port: process.env.PORT,
+      port: configs.port,
       routes: {
         cors: {
           origin: ['*'],
@@ -40,7 +40,7 @@ export async function init(configs: IServerConfigurations): Promise<Hapi.Server>
     await Promise.all(pluginPromises);
     logging.info('All plugins registered successfully.');
 
-    Users.init(server);
+    Resources.init(server);
     logging.info('Routes registered sucessfully.');
 
     return server;

@@ -1,11 +1,14 @@
 version: '2.1'
+
 services:
   server:
-    container_name: clique-api-server
+    container_name: typed-json-api-server
     build: .
-    command: npm start
+    command: npm run prod
+    restart: always
     depends_on:
       - postgres
+      - redis
     volumes:
       - .:/usr/app/
       - /usr/app/node_modules
@@ -13,7 +16,7 @@ services:
       - "5000:5000"
 
   postgres:
-    container_name: clique-api-postgres
+    container_name: typed-json-api-postgres
     image: postgres:9.6.2-alpine
     restart: always
     env_file: .env
@@ -23,7 +26,7 @@ services:
      - "5432:5432"
 
   redis:
-    container_name: clique-api-redis
+    container_name: typed-json-api-redis
     image: redis:4.0.8-alpine
     restart: always
     volumes:

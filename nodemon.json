@@ -9,8 +9,5 @@
   ],
   "execMap": {
     "ts": "ts-node"
-  },
-  "events": {
-    "start": "NODE_ENV=test ava-ts --color"
   }
 }

@@ -2,12 +2,17 @@
  * Testing user methods
  */
 
+require('dotenv').config() // tslint:disable-line
+
 import test from 'ava';
+import * as Chance from 'chance';
 import { Serializer } from 'jsonapi-serializer';
 import * as request from 'supertest';
 
 import { authenticate } from '../src/utils/auth';
 import { makeServer } from './helpers';
+
+const chance = new Chance();
 
 test.beforeEach(async (t) => {
   t.context.server = await makeServer();
@@ -20,11 +25,11 @@ test.afterEach(async (t) => {
 
 test('create user', async (t) => {
   const user = {
-    email: 'example@email.com',
-    login: 'some_login_string',
+    email: chance.email(),
+    login: chance.word(),
     password: 'Password123!',
-    firstname: 'Sandro',
-    lastname: 'Munda',
+    firstname: chance.first(),
+    lastname: chance.last(),
   };
 
   const data = new Serializer('users', { attributes: Object.keys(user) }).serialize(user);
@@ -49,7 +54,111 @@ test('create user', async (t) => {
   t.is(updateUser.status, 200, updateUser.body.message);
 
   const deleteUser = await request(t.context.server.listener)
-  .delete(`/api/users/${userId}`)
-  .set('Authorization', `Bearer ${t.context.token}`);
+    .delete(`/api/users/${userId}`)
+    .set('Authorization', `Bearer ${t.context.token}`);
   t.is(deleteUser.status, 200, deleteUser.body.message);
+});
+
+test('get users', async (t) => {
+  const getUsers = await request(t.context.server.listener)
+    .get(`/api/users?sort=name,stuff`)
+    .set('Authorization', `Bearer ${t.context.token}`);
+  t.is(getUsers.status, 200, getUsers.body.message);
+});
+
+test('create customer', async (t) => {
+  const type = 'customers';
+  const document = {
+    name: chance.word(),
+  };
+
+  const data = new Serializer(type, { attributes: Object.keys(document) }).serialize(document);
+  const post = await request(t.context.server.listener)
+    .post(`/api/${type}`)
+    .set('Authorization', `Bearer ${t.context.token}`)
+    .send(data);
+
+  t.is(post.status, 201, post.body.message);
+});
+
+test('create customer', async (t) => {
+  const type = 'customers';
+  const document = {
+    name: chance.word(),
+  };
+
+  const data = new Serializer(type, { attributes: Object.keys(document) }).serialize(document);
+  const post = await request(t.context.server.listener)
+    .post(`/api/${type}`)
+    .set('Authorization', `Bearer ${t.context.token}`)
+    .send(data);
+
+  t.is(post.status, 201, post.body.message);
+});
+
+test('create group', async (t) => {
+  const type = 'groups';
+  const document = {
+    name: chance.word(),
+  };
+
+  const data = new Serializer(type, { attributes: Object.keys(document) }).serialize(document);
+  const post = await request(t.context.server.listener)
+    .post(`/api/${type}`)
+    .set('Authorization', `Bearer ${t.context.token}`)
+    .send(data);
+
+  t.is(post.status, 201, post.body.message);
+});
+
+test('create folder', async (t) => {
+  const type = 'folders';
+  const document = {
+    name: chance.word(),
+  };
+
+  const data = new Serializer(type, { attributes: Object.keys(document) }).serialize(document);
+  const post = await request(t.context.server.listener)
+    .post(`/api/${type}`)
+    .set('Authorization', `Bearer ${t.context.token}`)
+    .send(data);
+
+  t.is(post.status, 201, post.body.message);
+});
+
+test('create collection', async (t) => {
+  const type = 'collections';
+  const document = {
+    name: chance.word(),
+  };
+
+  const data = new Serializer(type, { attributes: Object.keys(document) }).serialize(document);
+  const post = await request(t.context.server.listener)
+    .post(`/api/${type}`)
+    .set('Authorization', `Bearer ${t.context.token}`)
+    .send(data);
+
+  t.is(post.status, 201, post.body.message);
+});
+
+test.skip('create asset', async (t) => {
+  const type = 'assets';
+  const document = {
+    fileType: 'jpeg',
+    location: chance.domain(),
+    name: chance.word(),
+    success: true,
+  };
+
+  const data = new Serializer(type, {
+    keyForAttribute: 'camelCase',
+    attributes: Object.keys(document),
+  }).serialize(document);
+
+  const post = await request(t.context.server.listener)
+    .post(`/api/${type}`)
+    .set('Authorization', `Bearer ${t.context.token}`)
+    .send(data);
+
+  t.is(post.status, 201, post.body.message);
 });

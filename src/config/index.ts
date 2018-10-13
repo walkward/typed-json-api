@@ -15,15 +15,18 @@ const defaults = {
     jwtSecret: 'random-secret-password',
     jwtExpiration: '1h',
     routePrefix: '/api',
-    plugins: ['swagger', 'logging', 'jwt-auth'],
+    plugins: ['swagger', 'logging', 'jwt-auth', 'hapi-qs'],
+  },
+  redis: {
+    host: 'redis',
   },
   database: {
     type: 'postgres',
-    host: 'postgres',
-    port: 5432,
-    username: 'user',
-    password: 'de6a645113adf969363369ed4a25d3',
-    database: 'clique-api',
+    host: process.env.POSTGRES_HOST,
+    port: process.env.POSTGRES_PORT,
+    username: process.env.POSTGRES_USER,
+    password: process.env.POSTGRES_PASSWORD,
+    database: process.env.POSTGRES_DB,
     synchronize: true,
     logging: ['error', 'warn', 'info', 'log'],
     cache: {
@@ -34,13 +37,13 @@ const defaults = {
       },
     },
     entities: [
-      path.resolve('src/entity/**/*.ts'),
+      path.resolve('dist/entity/**/*.js'),
     ],
     migrations: [
-      path.resolve('src/migration/**/*.ts'),
+      path.resolve('dist/migration/**/*.js'),
     ],
     subscribers: [
-      path.resolve('src/subscriber/**/*.ts'),
+      path.resolve('dist/subscriber/**/*.js'),
     ],
   },
 };
@@ -48,15 +51,63 @@ const defaults = {
 const environments: any = {
   test: {
     server: {
-      port: 5001,
+      port: 0,
+    },
+    database: {
+      host: 'localhost',
+      cache: {
+        options: {
+          host: 'localhost',
+        },
+      },
+      entities: [
+        path.resolve('src/entity/**/*.ts'),
+      ],
+      migrations: [
+        path.resolve('src/migration/**/*.ts'),
+      ],
+      subscribers: [
+        path.resolve('src/subscriber/**/*.ts'),
+      ],
+    },
+    redis: {
+      host: 'localhost',
     },
   },
-  development: {},
+  development: {
+    server: {
+      port: 5001,
+    },
+    database: {
+      host: 'localhost',
+      cache: {
+        options: {
+          host: 'localhost',
+        },
+      },
+      entities: [
+        path.resolve('src/entity/**/*.ts'),
+      ],
+      migrations: [
+        path.resolve('src/migration/**/*.ts'),
+      ],
+      subscribers: [
+        path.resolve('src/subscriber/**/*.ts'),
+      ],
+    },
+    redis: {
+      host: 'localhost',
+    },
+  },
   production: {},
 };
 
 nconf.env().argv();
 nconf.defaults(merge(defaults, environments[nconf.get('NODE_ENV')]));
+
+export function getRedisConfigs(): any {
+  return nconf.get('redis');
+}
 
 export function getServerConfigs(): IServerConfigurations {
   return nconf.get('server');

@@ -1,4 +1,5 @@
 import * as Hapi from 'hapi';
+import RequestQuery from '../models/RequestQuery'
 
 /* ============= Requests ============= */
 
@@ -69,7 +70,7 @@ export interface IRelationships {
 }
 
 export interface ICollection extends Array<IResource> {
-  data: Array<IDataResource>;
+  data: IDataResource[];
   page: IPage;
 }
 
@@ -92,7 +93,7 @@ export interface IDataResource {
 export interface ILinks {
   self?: string;
   related?: {
-      href: string;
-      meta: object;
+    href: string;
+    meta: object;
   };
 }
