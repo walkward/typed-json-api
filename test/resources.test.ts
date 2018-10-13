@@ -1,5 +1,5 @@
 /**
- * Testing user methods
+ * Testing resource rest methods
  */
 
 require('dotenv').config() // tslint:disable-line
