@@ -1,12 +1,12 @@
 import * as Boom from 'boom';
-import { validate, ValidationError } from 'class-validator';
-import { Deserializer } from 'jsonapi-serializer';
-import { singular } from 'pluralize';
+// import { transformAndValidate } from 'class-transformer-validator';
+import { ValidationError } from 'class-validator';
+// import { singular } from 'pluralize';
 
-import entities from '../../entity';
+// import entities from '../../entity';
 import RequestQuery from '../../models/RequestQuery';
-
-const deserializer = new Deserializer();
+import { EntityTypes } from '../../types';
+import { deserialize } from '../../utils/json';
 
 const combineValidationMessages = (errors: ValidationError[]): string => {
   return errors.reduce((prev: string, curr: any) => {
@@ -16,18 +16,20 @@ const combineValidationMessages = (errors: ValidationError[]): string => {
 
 export async function validateResource(value: any) {
   try {
-    let resource = new entities[singular(value.data.type)]();
-    resource = await deserializer.deserialize(value);
+    const type: EntityTypes = value.data.type;
+    const resource = await deserialize(type, value);
 
-    const errors = await validate(resource);
+    // TODO: Implement some validation here
+    // const Entity = entities[singular(type)];
+    // resource = await transformAndValidate(Entity, resource);
 
-    if (errors.length > 0) {
-      throw Boom.badData(combineValidationMessages(errors), errors);
-    } else {
-      return resource;
-    }
+    return resource;
   } catch (error) {
-    throw Boom.boomify(error);
+    if (error.length) {
+      throw Boom.badData(combineValidationMessages(error), error);
+    } else {
+      throw Boom.boomify(error);
+    }
   }
 }
 

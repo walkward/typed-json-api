@@ -1,3 +1,4 @@
+import { IsString } from 'class-validator';
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne } from 'typeorm';
 
 import { Asset } from './Asset';
@@ -8,7 +9,8 @@ import { User } from './User';
 
 @Entity()
 export class Collection extends Base {
-  @Column()
+  @Column({ length: 256 })
+  @IsString()
   public name: string;
 
   @ManyToMany((type) => Asset, (asset) => asset.collections)

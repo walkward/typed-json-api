@@ -1,3 +1,4 @@
+import { IsString } from 'class-validator';
 import { Column, Entity, OneToMany } from 'typeorm';
 
 import { Base } from './Base';
@@ -7,7 +8,8 @@ import { User } from './User';
 
 @Entity()
 export class Customer extends Base {
-  @Column()
+  @Column({ length: 256 })
+  @IsString()
   public name: string;
 
   @OneToMany((type) => User, (user) => user.customer)

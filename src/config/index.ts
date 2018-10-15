@@ -2,7 +2,7 @@
  * App Configuration Object
  */
 
-import { merge } from 'lodash';
+import { defaultsDeep } from 'lodash';
 import * as nconf from 'nconf';
 import * as path from 'path';
 import { ConnectionOptions } from 'typeorm';
@@ -15,7 +15,7 @@ const defaults = {
     jwtSecret: 'random-secret-password',
     jwtExpiration: '1h',
     routePrefix: '/api',
-    plugins: ['swagger', 'logging', 'jwt-auth', 'hapi-qs'],
+    plugins: ['swagger', 'logging', 'jwt-auth', 'hapi-qs', 'json-api'],
   },
   redis: {
     host: 'redis',
@@ -103,7 +103,7 @@ const environments: any = {
 };
 
 nconf.env().argv();
-nconf.defaults(merge(defaults, environments[nconf.get('NODE_ENV')]));
+nconf.defaults(defaultsDeep(environments[nconf.get('NODE_ENV')], defaults));
 
 export function getRedisConfigs(): any {
   return nconf.get('redis');

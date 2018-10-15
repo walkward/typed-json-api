@@ -5,6 +5,7 @@ import { Base } from './Base';
 import { Collection } from './Collection';
 import { Customer } from './Customer';
 import { Group } from './Group';
+import { Project } from './Project';
 
 @Entity()
 export class User extends Base {
@@ -49,4 +50,7 @@ export class User extends Base {
 
   @OneToMany((type) => Collection, (collection) => collection.user)
   public collections: Collection[];
+
+  @OneToMany((type) => Project, (project) => project.customer)
+  public projects: Project[];
 }

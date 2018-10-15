@@ -10,7 +10,7 @@ const register = async (server: Hapi.Server): Promise<void> => {
       options: {},
     }]);
   } catch (err) {
-    throw new AppError('Error registering swagger plugin', false, err);
+    throw new AppError('Error registering hapi-json-api plugin', false, err);
   }
 };
 

@@ -1,3 +1,4 @@
+import { IsString } from 'class-validator';
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
 import { Asset } from './Asset';
@@ -6,7 +7,8 @@ import { Collection } from './Collection';
 
 @Entity()
 export class Folder extends Base {
-  @Column()
+  @Column({ length: 256 })
+  @IsString()
   public name: string;
 
   @OneToMany((type) => Collection, (collection) => collection.folder)

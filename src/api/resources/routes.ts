@@ -1,3 +1,4 @@
+// import { Validator } from 'class-validator';
 import * as Hapi from 'hapi';
 
 import statusCodes from './constants';
@@ -5,6 +6,8 @@ import Controller from './controller';
 import { validateQuery, validateResource } from './validator';
 
 export default function(server: Hapi.Server) {
+  // const validator = new Validator();
+
   const controller = new Controller();
   server.bind(controller);
 
@@ -18,6 +21,9 @@ export default function(server: Hapi.Server) {
       description: 'Get a resource.',
       validate: {
         query: validateQuery,
+        // {
+        //   id: async (value) => validator.isUUID(value) ? value : false,
+        // },
       },
       plugins: {
         'hapi-swagger': {
@@ -73,6 +79,7 @@ export default function(server: Hapi.Server) {
       description: 'Update current info.',
       validate: {
         payload: validateResource,
+        failAction: 'error',
       },
       plugins: {
         'hapi-swagger': {
@@ -92,6 +99,7 @@ export default function(server: Hapi.Server) {
       description: 'Create a resource.',
       validate: {
         payload: validateResource,
+        failAction: 'error',
       },
       plugins: {
         'hapi-swagger': {

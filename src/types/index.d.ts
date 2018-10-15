@@ -48,7 +48,7 @@ export interface IPluginInfo {
   version: string;
 }
 
-/* ============= JSON:API ============= */
+/* ============= Plain JSON:API ============= */
 
 export interface IResource {
   type: string;
@@ -97,3 +97,59 @@ export interface ILinks {
     meta: object;
   };
 }
+
+/* ============= JSON:API Serializer ============= */
+
+export type SerializeCaseType = 'dash-case' | 'lisp-case' | 'spinal-case' | 'kebab-case' | 'underscore_case' | 'snake_case' | 'camelCase' | 'CamelCase';
+
+export declare type SerializeLinkFunction = (links: any, current?: any, parent?: any) => string;
+
+export declare type SerializeKeyForAttributeFunction = (attribute: string) => string | SerializeCaseType
+
+export interface ISerializeLinks {
+  [key: string]: string | SerializeLinkFunction
+}
+
+export declare type ISerializeRelationshipMetaFunction = (record: any) => string;
+
+export interface ISerializeRelationshipMeta {
+  [key: string]: number | ISerializeRelationshipMetaFunction
+}
+
+export interface ISerializeOptions {
+  [index: string]: any,
+  id?: string,
+  attributes: string[],
+  topLevelLinks?: ISerializeLinks,
+  keyForAttribute?: SerializeCaseType | SerializeKeyForAttributeFunction,
+  ref?: string | boolean | Function,
+  typeForAttribute?: (attribute: any, user: any) => any,
+  nullIfMissing?: boolean,
+  pluralizeType?: boolean,
+  ignoreRelationshipData?: boolean,
+  relationshipLinks?: ISerializeLinks,
+  relationshipMeta?: ISerializeRelationshipMeta,
+  dataLinks?: ISerializeLinks,
+  included?: boolean,
+  includedLinks?: ISerializeLinks,
+  embed?: boolean,
+  meta?: any
+}
+
+export interface IDeserializeOptions {
+  [index: string]: any,
+  keyForAttribute?: SerializeCaseType | SerializeKeyForAttributeFunction,
+}
+
+/* ============= OUR JSON:API ============= */
+
+export type EntityTypes = 'users' | 'groups' | 'projects' | 'customers' | 'folders' | 'assets' | 'collections';
+// export enum EntityTypesEnum {
+//   users = 'users',
+//   groups = 'groups',
+//   projects = 'projects',
+//   customers = 'customers',
+//   folders = 'folders',
+//   assets = 'assets',
+//   collections = 'collections',
+// }

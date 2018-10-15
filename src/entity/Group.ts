@@ -1,3 +1,4 @@
+import { IsString } from 'class-validator';
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
 
 import { Base } from './Base';
@@ -7,7 +8,8 @@ import { User } from './User';
 
 @Entity()
 export class Group extends Base {
-  @Column()
+  @Column({ length: 256 })
+  @IsString()
   public name: string;
 
   @OneToMany((type) => Collection, (collection) => collection.group)

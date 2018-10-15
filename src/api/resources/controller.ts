@@ -1,19 +1,19 @@
 import * as Boom from 'boom';
 import * as Hapi from 'hapi';
-import { Serializer } from 'jsonapi-serializer';
 import { singular } from 'pluralize';
 import { getConnection, getRepository } from 'typeorm';
 
 import entities from '../../entity';
-import { IRequest, IResource } from '../../types';
+import { EntityTypes } from '../../types';
+import { serialize } from '../../utils/json';
 
 export default class Controller {
 
-  public async create(request: IRequest, h: Hapi.ResponseToolkit) {
+  public async create(request: any, h: Hapi.ResponseToolkit) {
     try {
-      const { type } = request.params;
-      const { payload }: any = request;
-      const singleType = singular(type);
+      const type: EntityTypes = request.params.type;
+      const singleType: string = singular(type);
+      const payload: any = request.payload;
 
       const { raw: [raw] } = await getConnection()
         .createQueryBuilder()
@@ -22,18 +22,19 @@ export default class Controller {
         .values(payload)
         .execute();
 
-      return h.response(this.serialize(raw, type, request)).code(201);
+      const data = serialize(type, raw, { attributes: request.query.fields });
+      return h.response(data).code(201);
     } catch (error) {
       return Boom.boomify(error);
     }
   }
 
-  public async update(request: IRequest, h: Hapi.ResponseToolkit) {
+  public async update(request: any, h: Hapi.ResponseToolkit) {
     try {
-      const { type } = request.params;
-      const { id } = request.params;
-      const { payload }: any = request;
-      const singleType = singular(type);
+      const type: EntityTypes = request.params.type;
+      const id: string = request.params.id;
+      const singleType: string = singular(type);
+      const payload: any = request.payload;
 
       await getConnection()
         .createQueryBuilder()
@@ -48,11 +49,11 @@ export default class Controller {
     }
   }
 
-  public async delete(request: IRequest, h: Hapi.ResponseToolkit) {
+  public async delete(request: any, h: Hapi.ResponseToolkit) {
     try {
-      const { type } = request.params;
-      const { id } = request.params;
-      const singleType = singular(type);
+      const type: EntityTypes = request.params.type;
+      const id: string = request.params.id;
+      const singleType: string = singular(type);
 
       await getConnection()
         .createQueryBuilder()
@@ -67,11 +68,11 @@ export default class Controller {
     }
   }
 
-  public async get(request: IRequest, h: Hapi.ResponseToolkit) {
+  public async get(request: any, h: Hapi.ResponseToolkit) {
     try {
-      const { type } = request.params;
-      const { id } = request.params;
-      const singleType = singular(type);
+      const type: EntityTypes = request.params.type;
+      const id: string = request.params.id;
+      const singleType: string = singular(type);
 
       const resource = await getConnection()
         .createQueryBuilder()
@@ -80,19 +81,20 @@ export default class Controller {
         .where(`${singleType}.id = :id`, { id })
         .getOne();
 
-      return h.response(this.serialize(resource, type, request)).code(200);
+      const data = serialize(type, resource, { attributes: request.query.fields });
+      return h.response(data).code(200);
     } catch (error) {
       return Boom.boomify(error);
     }
   }
 
-  public async gets(request: IRequest, h: Hapi.ResponseToolkit) {
+  public async gets(request: any, h: Hapi.ResponseToolkit) {
     try {
-      const { type } = request.params;
-      const { query }: any = request;
-      const { offset } = query.page;
-      const { limit } = query.page;
-      const singleType = singular(type);
+      const type: EntityTypes = request.params.type;
+      const query: any = request.query;
+      const offset: number = query.page.offset;
+      const limit: number = query.page.limit;
+      const singleType: string = singular(type);
 
       const resources = await getRepository(entities[singleType])
         .createQueryBuilder(singleType)
@@ -101,26 +103,10 @@ export default class Controller {
         .take(limit)
         .getMany();
 
-      return h.response(this.serialize(resources, type, request)).code(200);
+      const data = serialize(type, resources, { attributes: request.query.fields });
+      return h.response(data).code(200);
     } catch (error) {
       return Boom.boomify(error);
     }
-  }
-
-  private serialize(data: any, type: string, request: any): IResource {
-    const { pathname } = request.url;
-    const attributes = request.query.fields;
-
-    const serializer = new Serializer(type, {
-      attributes,
-      topLevelLinks: {
-        self: () => `${pathname}`,
-      },
-      dataLinks: {
-        self: (dataSet: any, resource: any) => `//localhost:3000/api/${type}/${resource.id}`,
-      },
-    });
-
-    return serializer.serialize(data);
   }
 }
