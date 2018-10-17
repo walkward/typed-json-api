@@ -1,16 +1,16 @@
+// import * as fortuneHTTP from 'fortune-http';
+// import * as jsonApiSerializer from 'fortune-json-api';
 import * as Hapi from 'hapi';
 
 import { IPlugin } from '../../../types';
 import { AppError } from '../../../utils/errors';
+// import { store } from './fortune';
 
 const register = async (server: Hapi.Server): Promise<void> => {
   try {
-    return server.register([{
-      plugin: require('@gar/hapi-json-api'),
-      options: {},
-    }]);
+    return;
   } catch (err) {
-    throw new AppError('Error registering hapi-json-api plugin', false, err);
+    throw new AppError('Error registering fortune plugin', false, err);
   }
 };
 
@@ -18,7 +18,7 @@ export default (): IPlugin => {
   return {
     register,
     info: () => {
-      return { name: 'hapi-json-api', version: '3.0.2' };
+      return { name: 'Fortune', version: '0.0.1' };
     },
   };
 };

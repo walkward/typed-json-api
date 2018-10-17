@@ -1,9 +1,11 @@
 import * as Hapi from 'hapi';
 
-import * as Resources from './api/resources';
-import { IPlugin, IServerConfigurations } from './types';
-import { AppError } from './utils/errors';
-import logging from './utils/logging';
+import { IPlugin, IServerConfigurations } from '../types';
+import { AppError } from '../utils/errors';
+import logging from '../utils/logging';
+
+// import * as Resources from './api/resources';
+// import * as Fortune from './api/fortune';
 
 export async function init(configs: IServerConfigurations): Promise<Hapi.Server> {
   try {
@@ -40,11 +42,11 @@ export async function init(configs: IServerConfigurations): Promise<Hapi.Server>
     await Promise.all(pluginPromises);
     logging.info('All plugins registered successfully.');
 
-    Resources.init(server);
+    // Fortune.init(server);
     logging.info('Routes registered sucessfully.');
 
     return server;
   } catch (err) {
-    throw new AppError('Error starting server:', false, err);
+    throw new AppError(`Error starting server: ${err.message}`, false, err);
   }
 }

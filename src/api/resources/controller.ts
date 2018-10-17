@@ -3,9 +3,9 @@ import * as Hapi from 'hapi';
 import { singular } from 'pluralize';
 import { getConnection, getRepository } from 'typeorm';
 
+import { EntityTypes } from '../../../types';
+import { serialize } from '../../../utils/json';
 import entities from '../../entity';
-import { EntityTypes } from '../../types';
-import { serialize } from '../../utils/json';
 
 export default class Controller {
 

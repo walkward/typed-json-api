@@ -5,10 +5,12 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
+    "prebuild": "npm run clean",
+    "clean": "rimraf ./dist",
     "test": "NODE_ENV=test ava-ts --color",
     "test:coverage": "NODE_ENV=test nyc ava-ts",
     "preprod": "npm run build",
-    "prod": "NODE_ENV=production node dist/index.js",
+    "prod": "NODE_ENV=production node dist/src/index.js",
     "start": "NODE_ENV=development nodemon src/index.ts",
     "lint": "tslint src/**/*.ts"
   },
@@ -21,6 +23,10 @@
     "class-transformer-validator": "0.6.0",
     "class-validator": "0.9.1",
     "dotenv": "6.0.0",
+    "fortune": "5.5.12",
+    "fortune-http": "1.2.16",
+    "fortune-json-api": "2.1.5",
+    "fortune-postgres": "1.6.9",
     "fs": "0.0.1-security",
     "good": "8.1.0",
     "good-console": "7.1.0",
@@ -60,9 +66,11 @@
     "@types/supertest": "2.0.6",
     "ava": "0.25.0",
     "ava-ts": "0.25.2",
+    "meow": "5.0.0",
     "node": "9.8.0",
     "nodemon": "1.18.4",
     "nyc": "13.0.1",
+    "rimraf": "2.6.2",
     "supertest": "3.3.0",
     "ts-node": "7.0.0",
     "tslint": "5.11.0",
@@ -88,5 +96,8 @@
     "require": [
       "ts-node/register"
     ]
+  },
+  "bin": {
+    "clique": "./bin/cli.js"
   }
 }

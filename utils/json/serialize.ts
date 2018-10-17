@@ -1,5 +1,6 @@
 import { Serializer } from 'jsonapi-serializer';
 import { defaultsDeep } from 'lodash';
+
 import { EntityTypes, IDataResource, IResource, ISerializeOptions } from '../../types';
 import { AppError } from '../errors';
 

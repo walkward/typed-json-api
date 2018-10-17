@@ -1,4 +1,5 @@
 {
+  "compileOnSave": true,
   "compilerOptions": {
     "strictNullChecks": true,
     "noImplicitReturns": true,
@@ -13,7 +14,6 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "sourceMap": true,
-    "typeRoots": ["node_modules/@types"],
     "baseUrl": ".",
     "lib": [
       "es2015.promise",
@@ -23,12 +23,12 @@
     "paths": {
       "*": [
         "node_modules/*",
-        "src/types/*"
+        "types/*"
       ]
     },
   },
   "include": [
-    "src/**/**.ts"
+    "./**/*.ts"
   ],
   "exclude": [
     "node_modules"

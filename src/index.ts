@@ -5,12 +5,13 @@
 import * as dotenv from 'dotenv';
 dotenv.config(); // tslint:disable-line
 
-import * as Configs from './config';
+import '../utils/uncaught'; // tslint:disable-line
+
+import * as Configs from '../config';
+import { AppError } from '../utils/errors';
+import logging from '../utils/logging';
 import * as Database from './database';
 import * as Server from './server';
-import { AppError } from './utils/errors';
-import logging from './utils/logging';
-import './utils/uncaught';
 
 logging.info(`Running environment ${process.env.NODE_ENV}`);
 
@@ -34,4 +35,6 @@ export const start = async () => {
 };
 
 // Start the server
-start();
+if (process.env.NODE_ENV !== 'test') {
+  start();
+}

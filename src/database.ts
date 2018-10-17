@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { ConnectionOptions, createConnection } from 'typeorm';
 
-import { AppError } from './utils/errors';
+import { AppError } from '../utils/errors';
 
 export async function init(config: ConnectionOptions): Promise<any> {
   try {

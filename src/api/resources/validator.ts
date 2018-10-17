@@ -4,9 +4,9 @@ import { ValidationError } from 'class-validator';
 // import { singular } from 'pluralize';
 
 // import entities from '../../entity';
+import { EntityTypes } from '../../../types';
+import { deserialize } from '../../../utils/json';
 import RequestQuery from '../../models/RequestQuery';
-import { EntityTypes } from '../../types';
-import { deserialize } from '../../utils/json';
 
 const combineValidationMessages = (errors: ValidationError[]): string => {
   return errors.reduce((prev: string, curr: any) => {

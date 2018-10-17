@@ -1,6 +1,7 @@
 import { Deserializer } from 'jsonapi-serializer';
 import { defaultsDeep } from 'lodash';
 import { plural } from 'pluralize';
+
 import { EntityTypes, IDeserializeOptions } from '../../types';
 import { AppError } from '../errors';
 

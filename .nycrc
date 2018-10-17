@@ -16,6 +16,6 @@
   ],
   "cache": true,
   "all": true,
-  "temp-directory": "./reports/.nyc_output",
-  "report-dir": "./reports/.nyc_output"
+  "temp-directory": "./logs/.nyc_output",
+  "report-dir": "./logs/.nyc_output"
 }

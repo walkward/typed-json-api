@@ -1,9 +1,9 @@
 import * as Hapi from 'hapi';
 import * as nconf from 'nconf';
 
-import { IPlugin } from '../../types';
-import { validate } from '../../utils/auth';
-import { AppError } from '../../utils/errors';
+import { IPlugin } from '../../../types';
+import { validate } from '../../../utils/auth';
+import { AppError } from '../../../utils/errors';
 
 const register = async (server: Hapi.Server): Promise<void> => {
   try {
