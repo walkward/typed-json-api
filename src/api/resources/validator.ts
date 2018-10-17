@@ -6,7 +6,7 @@ import { ValidationError } from 'class-validator';
 // import entities from '../../entity';
 import { EntityTypes } from '../../../types';
 import { deserialize } from '../../../utils/json';
-import RequestQuery from '../../models/RequestQuery';
+import { RequestQuery } from '../../helpers/requests';
 
 const combineValidationMessages = (errors: ValidationError[]): string => {
   return errors.reduce((prev: string, curr: any) => {

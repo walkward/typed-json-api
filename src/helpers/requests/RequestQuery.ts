@@ -3,7 +3,7 @@ interface IPage {
   limit: number;
 }
 
-export default class RequestQuery {
+export class RequestQuery {
   public sort: string[];
   public include: string[];
   public page: IPage;

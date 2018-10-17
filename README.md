@@ -86,3 +86,4 @@ Everything written in es6 will be build into the "dist" directory.
 - [ ] Establish better patterns for error handling
 - [ ] Verify swagger docs work with JSON:API
 - [ ] Replace as many `any` typescript types as possible
+- [ ] Write readme.md

@@ -1,5 +1,5 @@
 import * as Hapi from 'hapi';
-import RequestQuery from '../src/models/RequestQuery'
+import { RequestQuery } from '../src/helpers/requests'
 
 /* ============= Requests ============= */
 
