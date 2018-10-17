@@ -59,8 +59,6 @@ test.skip('create resources', async (t) => {
 
   t.is(createProject.status, 201, createProject.body.message);
 
-  // const projectId = await deserialize('projects', createProject.body).then(({id}) => id);
-
   const user = serialize('users', {
     email: chance.email(),
     login: chance.word(),

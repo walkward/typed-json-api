@@ -1,19 +1,19 @@
 version: '2.1'
 
 services:
-  server:
-    container_name: typed-json-api-server
-    build: .
-    command: npm run prod
-    restart: always
-    depends_on:
-      - postgres
-      - redis
-    volumes:
-      - .:/usr/app/
-      - /usr/app/node_modules
-    ports:
-      - "5000:5000"
+  # server:
+  #   container_name: typed-json-api-server
+  #   build: .
+  #   command: npm run prod
+  #   restart: always
+  #   depends_on:
+  #     - postgres
+  #     - redis
+  #   volumes:
+  #     - .:/usr/app/
+  #     - /usr/app/node_modules
+  #   ports:
+  #     - "5000:5000"
 
   postgres:
     container_name: typed-json-api-postgres

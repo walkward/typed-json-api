@@ -1,5 +1,5 @@
 /**
- * Testing download methods
+ * Testing utils
  */
 
 import test from 'ava';

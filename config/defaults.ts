@@ -6,7 +6,7 @@ export default {
     jwtSecret: 'random-secret-password',
     jwtExpiration: '1h',
     routePrefix: '/api',
-    plugins: ['swagger', 'logging', 'jwt-auth', 'hapi-qs', 'json-api', 'fortune'],
+    plugins: ['swagger', 'logging', 'jwt-auth', 'hapi-qs', 'json-api'],
   },
   redis: {
     host: 'redis',

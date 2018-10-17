@@ -2,7 +2,6 @@
 - [Scripts](#scripts)
 - [CLI](#cli)
 - [Typescript](#typescript)
-- [Docker](#docker)
 - [Database](#database)
 - [Testing](#testing)
 - [Directory Structure](#directory-structure)
@@ -17,13 +16,29 @@ Prerequisites:
 Installation:
 
 ```console
-yarn install
+npm install
 ```
 
-Starting server:
+Add a .env file with some values *before* creating docker services
+
+```bash
+POSTGRES_HOST=postgres
+POSTGRES_USER=user
+POSTGRES_DB=typed-json-api
+POSTGRES_PASSWORD=password
+POSTGRES_PORT=5432
+```
+
+Starting postgres & redis:
 
 ```console
-yarn start
+docker-compose up -d
+```
+
+Starting server (development):
+
+```console
+npm start
 ```
 
 ### Scripts
@@ -32,13 +47,17 @@ yarn start
 
 ### Typescript
 
-Everything written in es6 will be build into the "dist" directory.
+The server & tests are run using ava-ts & node-ts during development. 
 
-### Docker
+Everything written in es6 will be build into the "dist" directory.
 
 ### Database
 
 ### Testing
+
+```console
+npm test
+```
 
 ### Directory Structure
 

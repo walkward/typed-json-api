@@ -5,7 +5,6 @@ import { AppError } from '../utils/errors';
 import logging from '../utils/logging';
 
 // import * as Resources from './api/resources';
-// import * as Fortune from './api/fortune';
 
 export async function init(configs: IServerConfigurations): Promise<Hapi.Server> {
   try {
