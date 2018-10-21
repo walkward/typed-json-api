@@ -1,7 +1,7 @@
 import * as Hapi from 'hapi';
 
-import { IPlugin } from '../../../types';
-import { AppError } from '../../../utils/errors';
+import { IPlugin } from 'app/types';
+import { AppError } from 'app/utils/errors';
 
 const register = async (server: Hapi.Server): Promise<void> => {
   try {
@@ -12,8 +12,8 @@ const register = async (server: Hapi.Server): Promise<void> => {
         plugin: require('hapi-swagger'),
         options: {
           info: {
-            title: 'Task Api',
-            description: 'Task Api Documentation',
+            title: 'Api',
+            description: 'Api Documentation',
             version: '1.0',
           },
           tags: [

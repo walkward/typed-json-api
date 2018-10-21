@@ -16,7 +16,7 @@ Prerequisites:
 Installation:
 
 ```console
-npm install
+yarn install
 ```
 
 Add a .env file with some values *before* creating docker services
@@ -38,7 +38,7 @@ docker-compose up -d
 Starting server (development):
 
 ```console
-npm start
+yarn start
 ```
 
 ### Scripts
@@ -56,7 +56,7 @@ Everything written in es6 will be build into the "dist" directory.
 ### Testing
 
 ```console
-npm test
+yarn test
 ```
 
 ### Directory Structure
@@ -93,7 +93,7 @@ npm test
 - [ ] Integrate PM2
 - [ ] Configure logs
 - [ ] Implement cat box
-- [ ] Use yarn instead of npm
+- [x] Use yarn instead of npm
 - [ ] Setup documentation
 - [ ] Add file uploading?
 - [ ] Use ioredis instead of redis

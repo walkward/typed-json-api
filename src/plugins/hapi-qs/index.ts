@@ -1,7 +1,7 @@
 import * as Hapi from 'hapi';
 
-import { IPlugin } from '../../../types';
-import { AppError } from '../../../utils/errors';
+import { IPlugin } from 'app/types';
+import { AppError } from 'app/utils/errors';
 
 const register = async (server: Hapi.Server): Promise<void> => {
   try {

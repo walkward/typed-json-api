@@ -4,7 +4,7 @@
 
 import test from 'ava';
 
-import { AppError } from '../../utils/errors';
+import { AppError } from '../../src/utils/errors';
 
 test('Custom error object property tests', (t) => {
   const message = 'Sample Error';

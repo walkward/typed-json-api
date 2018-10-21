@@ -1,16 +1,16 @@
 import * as Hapi from 'hapi';
 
-import { IPlugin, IServerConfigurations } from '../types';
-import { AppError } from '../utils/errors';
-import logging from '../utils/logging';
+import { AppError } from 'app/utils/errors';
+import logging from 'app/utils/logging';
+import { IPlugin, IServerConfigurations } from './types';
 
-// import * as Resources from './api/resources';
+import * as Notifications from 'app/api/notifications';
 
-export async function init(configs: IServerConfigurations): Promise<Hapi.Server> {
+export async function init(serverConfigs: IServerConfigurations): Promise<Hapi.Server> {
   try {
     const server = new Hapi.Server({
       debug: { request: ['error'] },
-      port: configs.port,
+      port: serverConfigs.port,
       routes: {
         cors: {
           origin: ['*'],
@@ -18,31 +18,30 @@ export async function init(configs: IServerConfigurations): Promise<Hapi.Server>
       },
     });
 
-    if (configs.routePrefix) {
-      server.realm.modifiers.route.prefix = configs.routePrefix;
-    }
+    /* ========== Start Setup Hapi Plugins ========== */
 
-    //  Setup Hapi Plugins
-    const plugins: string[] = configs.plugins;
-    const pluginOptions = {
-      serverConfigs: configs,
-    };
+    const plugins: string[] = serverConfigs.plugins;
+    const pluginOptions = { serverConfigs };
 
     const pluginPromises: Array<Promise<any>> = [];
 
     plugins.forEach((pluginName: string) => {
       const plugin: IPlugin = require('./plugins/' + pluginName).default();
-      logging.info(
-        `Register Plugin ${plugin.info().name} v${plugin.info().version}`,
-      );
+      logging.info(`Register Plugin ${plugin.info().name} v${plugin.info().version}`);
       pluginPromises.push(plugin.register(server, pluginOptions));
     });
 
     await Promise.all(pluginPromises);
     logging.info('All plugins registered successfully.');
 
-    // Fortune.init(server);
+    /* ========== End Setup Hapi Plugins ========== */
+
+    /* ========== Start Registering Routes ========== */
+
+    Notifications.init(server);
     logging.info('Routes registered sucessfully.');
+
+    /* ========== End Registering Routes ========== */
 
     return server;
   } catch (err) {
