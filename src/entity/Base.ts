@@ -1,7 +1,8 @@
 import { IsDate, IsInt, IsOptional, IsUUID } from 'class-validator';
-import { Field, ID } from 'type-graphql';
+import { Field, ID, ObjectType } from 'type-graphql';
 import { CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn, VersionColumn } from 'typeorm';
 
+@ObjectType()
 export abstract class Base {
   @Field((type) => ID)
   @PrimaryGeneratedColumn('uuid')

@@ -4,7 +4,7 @@ import { InjectRepository } from 'typeorm-typedi-extensions';
 
 import { Notification } from 'app/entity/Notification';
 
-@Resolver(Notification)
+@Resolver((of) => Notification)
 export class NotificationResolver {
   constructor(
     @InjectRepository(Notification) private readonly notificationRepository: Repository<Notification>,

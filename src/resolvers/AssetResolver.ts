@@ -4,7 +4,7 @@ import { InjectRepository } from 'typeorm-typedi-extensions';
 
 import { Asset } from 'app/entity/Asset';
 
-@Resolver(Asset)
+@Resolver((of) => Asset)
 export class AssetResolver {
   constructor(
     @InjectRepository(Asset) private readonly assetRepository: Repository<Asset>,

@@ -4,7 +4,7 @@ import { InjectRepository } from 'typeorm-typedi-extensions';
 
 import { Folder } from 'app/entity/Folder';
 
-@Resolver(Folder)
+@Resolver((of) => Folder)
 export class FolderResolver {
   constructor(
     @InjectRepository(Folder) private readonly folderRepository: Repository<Folder>,

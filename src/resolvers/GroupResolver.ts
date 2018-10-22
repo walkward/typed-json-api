@@ -4,7 +4,7 @@ import { InjectRepository } from 'typeorm-typedi-extensions';
 
 import { Group } from 'app/entity/Group';
 
-@Resolver(Group)
+@Resolver((of) => Group)
 export class GroupResolver {
   constructor(
     @InjectRepository(Group) private readonly groupRepository: Repository<Group>,

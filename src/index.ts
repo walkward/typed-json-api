@@ -47,7 +47,11 @@ export async function start(): Promise<Hapi.Server> {
       schema,
       debug: true,
       formatError: TypeGraphQL.formatArgumentValidationError,
-      playground: true,
+      playground: {
+        settings: {
+          'editor.cursorShape': 'line',
+        } as any,
+      },
       subscriptions: {
         path: '/subscriptions',
       },

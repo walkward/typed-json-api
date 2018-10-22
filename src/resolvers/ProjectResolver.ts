@@ -4,7 +4,7 @@ import { InjectRepository } from 'typeorm-typedi-extensions';
 
 import { Project } from 'app/entity/Project';
 
-@Resolver(Project)
+@Resolver((of) => Project)
 export class ProjectResolver {
   constructor(
     @InjectRepository(Project) private readonly projectRepository: Repository<Project>,

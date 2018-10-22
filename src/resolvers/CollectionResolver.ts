@@ -4,7 +4,7 @@ import { InjectRepository } from 'typeorm-typedi-extensions';
 
 import { Collection } from 'app/entity/Collection';
 
-@Resolver(Collection)
+@Resolver((of) => Collection)
 export class CollectionResolver {
   constructor(
     @InjectRepository(Collection) private readonly collectionRepository: Repository<Collection>,
