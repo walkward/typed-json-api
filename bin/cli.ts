@@ -1,11 +1,11 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env node -r ts-node/register
+
+process.env.NODE_ENV = 'cli';
 
 import * as dotenv from 'dotenv';
 dotenv.config(); // tslint:disable-line
 
 import { run } from '../scripts';
-
-process.env.NODE_ENV = 'cli';
 
 try {
   run();

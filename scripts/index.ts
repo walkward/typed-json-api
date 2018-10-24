@@ -2,21 +2,19 @@ import * as meow from 'meow';
 
 import { databaseConfigs } from '../src/config';
 
-import create from './db/create';
-import recreate from './db/recreate';
+import * as db from './db';
 
 const commandMap: any = {
-  db: {
-    recreate,
-    create,
-  },
+  db,
 };
 
 const cli = meow(`
     Usage
       $ clique-cli <command> <task> [options]
-    Commands
-      db
+    Commands/Tasks
+      db create
+      db drop
+      db seed
     Options
       -h, --help           Show help
       -e, --environment    Environment in which to run the command (development) (required)
@@ -50,9 +48,11 @@ const cli = meow(`
 export function run() {
   const [command, task] = cli.input;
 
-  if (!task) {
+  if (!task && command) {
     return commandMap[command](cli.flags);
-  } else {
+  } else if (command && task) {
     return commandMap[command][task](cli.flags);
+  } else {
+    throw Error('You must provide a command');
   }
 }

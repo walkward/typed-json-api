@@ -3,12 +3,14 @@ import * as TypeORM from 'typeorm';
 import * as config from '../../../src/config';
 import { done } from '../../helpers';
 
-export async function create() {
+export async function drop() {
   // Get config
   const databaseConfigs = config.databaseConfigs();
 
   // Creating connection with DB
-  await TypeORM.createConnection(databaseConfigs);
+  const connection = await TypeORM.createConnection(databaseConfigs);
 
-  done('Successfully created db');
+  await connection.dropDatabase();
+
+  done('Successfully dropped db');
 }

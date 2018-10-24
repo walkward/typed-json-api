@@ -1,10 +1,11 @@
 import { IsString } from 'class-validator';
 import { Field, ObjectType } from 'type-graphql';
-import { Column, Entity, OneToMany, Tree, TreeChildren, TreeParent } from 'typeorm';
+import { Column, Entity, OneToMany, OneToOne, Tree, TreeChildren, TreeParent } from 'typeorm';
 
 import { Asset } from './Asset';
 import { Base } from './Base';
 import { Collection } from './Collection';
+import { Project } from './Project';
 
 @Entity()
 @Tree('closure-table')
@@ -27,11 +28,15 @@ export class Folder extends Base {
   // @OneToMany((type) => Folder, (folder) => folder.folder)
   // public folders: Folder[];
 
-  @TreeChildren()
-  public folders: Folder[];
+  @Field((type) => Project)
+  @OneToOne((type) => Project)
+  public project: Project;
+
+  @TreeChildren({ cascade: true })
+  public children: Folder[];
 
   @TreeParent()
-  public folder: Folder;
+  public parent: Folder;
 
   @Field((type) => [Asset])
   @OneToMany((type) => Asset, (asset) => asset.folder)

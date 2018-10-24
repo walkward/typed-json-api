@@ -6,7 +6,7 @@ import { Base } from './Base';
 import { Collection } from './Collection';
 import { Folder } from './Folder';
 
-enum FileTypes {
+export enum FileTypes {
   jpg = 'jpg',
   png = 'png',
   gif = 'gif',

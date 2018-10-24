@@ -18,7 +18,11 @@ export class Project extends Base {
   @Field((type) => Folder)
   @OneToOne((type) => Folder)
   @JoinColumn()
-  public rootFolder: Folder;
+  public folder: Folder;
+
+  // @Field((type) => [Folder])
+  // @OneToMany((type) => Folder, (folder) => folder.folder)
+  // public folders: Folder[];
 
   @Field((type) => User)
   @ManyToOne((type) => User, (user) => user.projects)

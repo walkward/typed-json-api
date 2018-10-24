@@ -14,7 +14,7 @@ const environments: any = {
   production,
   development,
   test,
-  cli: {},
+  cli: development,
 };
 
 // Adding environment variables and arguments to config

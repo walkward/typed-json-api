@@ -1,10 +1,9 @@
-import { Arg, Authorized, Int, Mutation, Query, Resolver, Root, Subscription } from 'type-graphql';
+import { Arg, Authorized, Int, Mutation, Query, Resolver } from 'type-graphql';
 import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 
-import { Notification } from 'app/entity/Notification';
 import { User } from 'app/entity/User';
-import { UserInput } from 'app/inputs/UserInput';
+import { UserInput } from 'app/resolvers/inputs';
 
 @Resolver((of) => User)
 export class UserResolver {
@@ -30,16 +29,5 @@ export class UserResolver {
     });
 
     return this.userRepository.save(recipe);
-  }
-
-  @Subscription({
-    topics: 'NOTIFICATIONS',
-    filter: ({ payload, args }) => args.priorities.includes(payload.priority),
-  })
-  public newNotification(
-    @Arg('topic') topic: string,
-    @Root() notificationPayload: Notification,
-  ): Notification {
-    return { ...notificationPayload };
   }
 }

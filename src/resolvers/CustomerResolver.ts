@@ -3,7 +3,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 
 import { Customer } from 'app/entity/Customer';
-import { CustomerInput } from 'app/inputs';
+import { CustomerInput } from 'app/resolvers/inputs';
 
 @Resolver((of) => Customer)
 export class CustomerResolver {
