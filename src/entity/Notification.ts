@@ -11,4 +11,9 @@ export class Notification extends Base {
   @Column({ length: 256 })
   @IsString()
   public message: string;
+
+  @Field()
+  @Column({ length: 256 })
+  @IsString()
+  public topic: string;
 }

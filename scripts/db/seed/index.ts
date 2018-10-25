@@ -1,137 +1,150 @@
-import * as Chance from 'chance';
 import * as TypeORM from 'typeorm';
 
 import * as config from '../../../src/config';
 import * as entities from '../../../src/entity';
+import Seeds from '../../../src/utils/seeds';
 import { done } from '../../helpers';
 
-export async function seed() {
-  const chance = new Chance();
+export async function seed({ seedMultiplier }: { seedMultiplier: number }) {
+  try {
+    const seeds = new Seeds(0);
 
-  // Get config
-  const databaseConfigs = config.databaseConfigs();
+    const count: any = {
+      customers: 1,
+      users: 5 * seedMultiplier,
+      groups: 10 * seedMultiplier,
+      projects: 20 * seedMultiplier,
+      folders: 20 * seedMultiplier,
+      subFolders: 80 * seedMultiplier,
+      subSubFolders: 320 * seedMultiplier,
+      personalCollections: 40 * seedMultiplier,
+      groupCollections: 40 * seedMultiplier,
+      projectCollections: 40 * seedMultiplier,
+      assets: 3000 * seedMultiplier,
+      notifications: 5 * seedMultiplier,
+    };
 
-  // Creating connection with DB
-  const connection = await TypeORM.createConnection(databaseConfigs);
+    // Creating connection with DB
+    const databaseConfigs = config.databaseConfigs();
+    const connection = await TypeORM.createConnection(databaseConfigs);
+    const manager = connection.createEntityManager();
 
-  const customers = await connection.createQueryBuilder()
-    .insert()
-    .into(entities.Customer)
-    .values(Array(10).fill(null).map(() => ({
-      name: chance.name(),
-    })))
-    .execute();
+    const customers = await manager.create(entities.Customer, Array(count.customers).fill(null).map((o, i) => ({
+      name: seeds.companyName(),
+    } as entities.Customer)));
 
-  const groups = await connection.createQueryBuilder()
-    .insert()
-    .into(entities.Group)
-    .values(Array(10).fill(null).map(() => ({
-      name: chance.name(),
-      customer: chance.pickone(customers.raw as entities.Customer[]),
-    })))
-    .execute();
+    await manager.save(customers);
 
-  const users = await connection.createQueryBuilder()
-    .insert()
-    .into(entities.User)
-    .values(Array(10).fill(null).map(() => ({
-      firstname: chance.first(),
-      lastname: chance.last(),
-      email: chance.email(),
+    const groups = await manager.create(entities.Group, Array(count.groups).fill(null).map((o, i) => ({
+      name: seeds.title(),
+      customer: seeds.pickone(customers),
+    } as entities.Group)));
+
+    await manager.save(groups);
+
+    const projects = await manager.create(entities.Project, Array(count.projects).fill(null).map(() => ({
+      name: seeds.title(),
+      customer: seeds.pickone(customers),
+    } as entities.Project)));
+
+    const users = await manager.create(entities.User, Array(count.users).fill(null).map((o, i) => ({
+      firstname: seeds.first(),
+      lastname: seeds.last(),
+      email: seeds.email(),
       password: 'TEST',
-      login: chance.twitter(),
-      customer: chance.pickone(customers.raw as entities.Customer[]),
-    })))
-    .execute();
+      login: seeds.twitter(),
+      customer: seeds.pickone(customers),
+      groups: seeds.pickset(groups),
+    } as entities.User)));
 
-  const rootFolders = await connection.createQueryBuilder()
-    .insert()
-    .into(entities.Folder)
-    .values(Array(10).fill(null).map((o, i) => ({
-      name: chance.name(),
-    })))
-    .execute();
+    await Promise.all([
+      manager.save(projects),
+      manager.save(users),
+    ]);
 
-  await connection.createQueryBuilder()
-    .insert()
-    .into(entities.Project)
-    .values(Array(10).fill(null).map((o, i) => ({
-      name: chance.name(),
-      customer: chance.pickone(customers.raw as entities.Customer[]),
-      folder: rootFolders.raw[i],
-    })))
-    .execute();
+    const folders = await manager.create(entities.Folder, Array(count.folders).fill(null).map((o, i) => ({
+      name: seeds.title(),
+      project: projects[i],
+    } as entities.Folder)));
 
-  const folders = await connection.createQueryBuilder()
-    .insert()
-    .into(entities.Folder)
-    .values(Array(10).fill(null).map((o, i) => ({
-      name: chance.name(),
-      parent: chance.pickone(rootFolders.raw as entities.Folder[]),
-    })))
-    .execute();
+    await manager.save(folders);
 
-  const subFolders = await connection.createQueryBuilder()
-    .insert()
-    .into(entities.Folder)
-    .values(Array(10).fill(null).map((o, i) => ({
-      name: chance.name(),
-      parent: chance.pickone(folders.raw as entities.Folder[]),
-    })))
-    .execute();
+    const subFolders = await manager.create(entities.Folder, Array(count.subFolders).fill(null).map((o, i) => ({
+      name: seeds.title(),
+      parent: seeds.pickone(folders),
+    } as entities.Folder)));
 
-  await connection.createQueryBuilder()
-    .insert()
-    .into(entities.Folder)
-    .values(Array(10).fill(null).map((o, i) => ({
-      name: chance.name(),
-      parent: chance.pickone(subFolders.raw as entities.Folder[]),
-    })))
-    .execute();
+    await manager.save(subFolders);
 
-  const personalCollections = await connection.createQueryBuilder()
-    .insert()
-    .into(entities.Collection)
-    .values(Array(10).fill(null).map(() => ({
-      name: chance.name(),
-      user: chance.pickone(users.raw as entities.User[]),
-    })))
-    .execute();
+    const subSubFolders = await manager.create(entities.Folder, Array(count.subSubFolders).fill(null).map((o, i) => ({
+      name: seeds.title(),
+      parent: seeds.pickone(subFolders),
+    } as entities.Folder)));
 
-  const groupCollections = await connection.createQueryBuilder()
-    .insert()
-    .into(entities.Collection)
-    .values(Array(10).fill(null).map(() => ({
-      name: chance.name(),
-      group: chance.pickone(groups.raw as entities.Group[]),
-    })))
-    .execute();
+    await manager.save(subSubFolders);
 
-  const projectCollections = await connection.createQueryBuilder()
-    .insert()
-    .into(entities.Collection)
-    .values(Array(10).fill(null).map(() => ({
-      name: chance.name(),
-      folder: chance.pickone(rootFolders.raw as entities.Folder[]),
-    })))
-    .execute();
+    const personalCollections = await manager.create(entities.Collection, Array(count.personalCollections).
+    fill(null).map((o, i) => ({
+      name: seeds.title(),
+      user: seeds.pickone(users),
+    } as entities.Collection)));
 
-  await connection.createQueryBuilder()
-    .insert()
-    .into(entities.Asset)
-    .values(Array(10).fill(null).map(() => ({
-      name: chance.name(),
-      location: chance.url(),
+    const groupCollections = await manager.create(entities.Collection, Array(count.groupCollections)
+    .fill(null).map((o, i) => ({
+      name: seeds.title(),
+      group: seeds.pickone(groups),
+    } as entities.Collection)));
+
+    const projectCollections = await manager.create(entities.Collection, Array(count.projectCollections)
+    .fill(null).map((o, i) => ({
+      name: seeds.title(),
+      folder: seeds.pickone(folders),
+    } as entities.Collection)));
+
+    await Promise.all([
+      manager.save(personalCollections),
+      manager.save(groupCollections),
+      manager.save(projectCollections),
+    ]);
+
+    const assets = await manager.create(entities.Asset, Array(count.assets).fill(null).map((o, i) => ({
+      name: seeds.title(),
+      location: seeds.url(),
       fileType: 'png' as entities.FileTypes,
-      success: chance.bool(),
-      collections: chance.pickset([
-        ...personalCollections.raw,
-        ...groupCollections.raw,
-        ...projectCollections.raw,
-      ]) as entities.Collection[],
-      folder: chance.pickone([...rootFolders.raw, ...folders.raw] as entities.Folder[]),
-    })))
-    .execute();
+      success: seeds.bool(),
+      collections: seeds.pickset([
+        ...personalCollections,
+        ...groupCollections,
+        ...projectCollections,
+      ], seeds.randomCount(0, 3)),
+      folder: seeds.pickone([
+        ...folders,
+        ...subFolders,
+        ...subSubFolders,
+      ]),
+    } as entities.Asset)));
 
-  done('Successfully seeded db');
+    await manager.save(assets);
+
+    const notifications = await manager.create(entities.Notification, Array(count.notifications)
+      .fill(null).map((o, i) => (seeds.pickone([{
+        message: `${seeds.pickone(users).firstname} completed approvals for ${seeds.pickone(projectCollections).name}`,
+        topic: 'APPROVAL',
+      }, {
+        message: `${seeds.pickone(users).firstname} commented on asset ${seeds.pickone(assets).name}`,
+        topic: 'ASSET',
+      }, {
+        message: `${seeds.pickone(users).firstname} was added to group ${seeds.pickone(groups).name}`,
+        topic: 'GROUP',
+      }, {
+        message: `${seeds.pickone(users).firstname} requested permissions for project ${seeds.pickone(projects).name}`,
+        topic: 'CUSTOMER',
+      }]) as entities.Notification)));
+
+    await manager.save(notifications);
+
+    done('Successfully seeded db');
+  } catch (error) {
+    throw error;
+  }
 }

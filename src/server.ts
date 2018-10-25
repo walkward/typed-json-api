@@ -1,7 +1,7 @@
 import * as Hapi from 'hapi';
 
 import { AppError } from 'app/utils/errors';
-import logging from 'app/utils/logging';
+import log from 'app/utils/log';
 import { IPlugin, IServerConfigurations } from './types';
 
 import * as Notifications from 'app/api/notifications';
@@ -27,19 +27,19 @@ export async function init(serverConfigs: IServerConfigurations): Promise<Hapi.S
 
     plugins.forEach((pluginName: string) => {
       const plugin: IPlugin = require('./plugins/' + pluginName).default();
-      logging.info(`Register Plugin ${plugin.info().name} v${plugin.info().version}`);
+      log.info(`Register Plugin ${plugin.info().name} v${plugin.info().version}`);
       pluginPromises.push(plugin.register(server, pluginOptions));
     });
 
     await Promise.all(pluginPromises);
-    logging.info('All plugins registered successfully.');
+    log.info('All plugins registered successfully.');
 
     /* ========== End Setup Hapi Plugins ========== */
 
     /* ========== Start Registering Routes ========== */
 
     Notifications.init(server);
-    logging.info('Routes registered sucessfully.');
+    log.info('Routes registered sucessfully.');
 
     /* ========== End Registering Routes ========== */
 

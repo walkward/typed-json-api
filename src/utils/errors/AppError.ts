@@ -1,4 +1,4 @@
-import logging from 'app/utils/logging';
+import log from 'app/utils/log';
 
 export class AppError extends Error {
   public isOperational: boolean;
@@ -17,7 +17,7 @@ export class AppError extends Error {
 
     // Logging the original error
     if (error && error instanceof AppError === false) {
-      logging.error(`Original Error: ${error.stack || error.message}`);
+      log.error(`Original Error: ${error.stack || error.message}`);
     }
   }
 }

@@ -5,15 +5,15 @@
  *
  */
 
-import { AppError, handleError } from 'app/utils/errors';
+import { handleError } from 'app/utils/errors';
 
-process.on('unhandledRejection', (err: AppError | Error) => {
+process.on('unhandledRejection', (err: any) => {
   throw err;
 });
 
-process.on('uncaughtException', (err: AppError | Error) => {
+process.on('uncaughtException', (err: any) => {
   handleError(err);
-  if (err instanceof AppError && err.isOperational !== true) {
+  if (err.isOperational !== true) {
     process.exit(1);
   }
 });

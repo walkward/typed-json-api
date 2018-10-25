@@ -2,6 +2,7 @@ import { IsBoolean, IsEnum, IsString, IsUrl } from 'class-validator';
 import { Field, ObjectType, registerEnumType } from 'type-graphql';
 import { Column, Entity, ManyToMany, ManyToOne } from 'typeorm';
 
+import { RelationColumn } from 'app/helpers';
 import { Base } from './Base';
 import { Collection } from './Collection';
 import { Folder } from './Folder';
@@ -45,6 +46,8 @@ export class Asset extends Base {
   public collections: Collection[];
 
   @Field((type) => Folder)
-  @ManyToOne((type) => Folder, (folder) => folder.folders)
+  @ManyToOne((type) => Folder, (folder) => folder.assets)
   public folder: Folder;
+  @RelationColumn()
+  public folderId: string;
 }

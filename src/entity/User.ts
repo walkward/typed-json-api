@@ -1,7 +1,8 @@
 import { IsAlpha, IsEmail, IsString, Length, Matches } from 'class-validator';
 import { Field, ObjectType } from 'type-graphql';
-import { Column, Entity, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
 
+import { RelationColumn } from 'app/helpers';
 import { Base } from './Base';
 import { Collection } from './Collection';
 import { Customer } from './Customer';
@@ -49,19 +50,22 @@ export class User extends Base {
   @Length(6, 100)
   public login: string;
 
-  @Field((type) => [Group])
+  @Field((type) => [Group], { nullable: true })
   @ManyToMany((type) => Group, (group) => group.collections)
+  @JoinTable()
   public groups: Group[];
 
   @Field((type) => Customer)
   @ManyToOne((type) => Customer, (customer) => customer.users)
   public customer: Customer;
+  @RelationColumn()
+  public customerId: string;
 
-  @Field((type) => [Collection])
+  @Field((type) => [Collection], { nullable: true })
   @OneToMany((type) => Collection, (collection) => collection.user)
   public collections: Collection[];
 
-  @Field((type) => [Project])
+  @Field((type) => [Project], { nullable: true })
   @OneToMany((type) => Project, (project) => project.customer)
   public projects: Project[];
 }

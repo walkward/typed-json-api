@@ -2,7 +2,7 @@ import * as Hapi from 'hapi';
 
 import { IPlugin } from 'app/types';
 import { AppError } from 'app/utils/errors';
-import logging from 'app/utils/logging';
+import log from 'app/utils/log';
 
 const register = async (server: Hapi.Server): Promise<void> => {
   try {
@@ -12,7 +12,7 @@ const register = async (server: Hapi.Server): Promise<void> => {
         reporters: {
           winston: [{
             module: 'good-winston',
-            args: [{ winston: logging }],
+            args: [{ winston: log }],
           }],
         },
       },

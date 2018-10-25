@@ -1,27 +1,9 @@
-import * as path from 'path';
-
 export const server: any  = {
-  port: 5001,
+  plugins: [ 'swagger', 'logging', /* 'jwt-auth', */ 'hapi-qs'],
 };
 
-export const database: any = {
-  host: 'localhost',
-  cache: {
-    options: {
-      host: 'localhost',
-    },
-  },
-  entities: [
-    path.resolve('src/entity/**/*.ts'),
-  ],
-  migrations: [
-    path.resolve('src/migration/**/*.ts'),
-  ],
-  subscribers: [
-    path.resolve('src/subscriber/**/*.ts'),
-  ],
-};
+// export const database: any = {
+// };
 
-export const redis: any = {
-  host: 'localhost',
-};
+// export const redis: any = {
+// };

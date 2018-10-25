@@ -14,7 +14,7 @@ const cli = meow(`
     Commands/Tasks
       db create
       db drop
-      db seed
+      db seed <multiplier>
     Options
       -h, --help           Show help
       -e, --environment    Environment in which to run the command (development) (required)
@@ -41,6 +41,10 @@ const cli = meow(`
     databaseName: {
       type: 'string',
       default: databaseConfigs().name,
+    },
+    seedMultiplier: {
+      type: 'string',
+      default: 1,
     },
   },
 });

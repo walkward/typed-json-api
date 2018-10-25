@@ -2,6 +2,7 @@ import { IsString } from 'class-validator';
 import { Field, ObjectType } from 'type-graphql';
 import { Column, Entity, JoinTable, ManyToMany, ManyToOne } from 'typeorm';
 
+import { RelationColumn } from 'app/helpers';
 import { Asset } from './Asset';
 import { Base } from './Base';
 import { Folder } from './Folder';
@@ -16,20 +17,26 @@ export class Collection extends Base {
   @IsString()
   public name: string;
 
-  @Field((type) => [Asset])
+  @Field((type) => [Asset], { nullable: true })
   @ManyToMany((type) => Asset, (asset) => asset.collections)
   @JoinTable()
   public assets: Asset[];
 
-  @Field((type) => Folder)
+  @Field((type) => Folder, { nullable: true })
   @ManyToOne((type) => Folder, (folder) => folder.collections)
   public folder: Folder;
+  @RelationColumn()
+  public folderId: string;
 
-  @Field((type) => User)
+  @Field((type) => User, { nullable: true })
   @ManyToOne((type) => User, (user) => user.collections)
   public user: User;
+  @RelationColumn()
+  public userId: string;
 
-  @Field((type) => Group)
+  @Field((type) => Group, { nullable: true })
   @ManyToOne((type) => Group, (group) => group.collections)
   public group: Group;
+  @RelationColumn()
+  public groupId: string;
 }

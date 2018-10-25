@@ -1,5 +1,5 @@
 import { IsString } from 'class-validator';
-import { Field, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from 'type-graphql';
 import { Column, Entity, OneToMany, OneToOne, Tree, TreeChildren, TreeParent } from 'typeorm';
 
 import { Asset } from './Asset';
@@ -16,29 +16,30 @@ export class Folder extends Base {
   @IsString()
   public name: string;
 
-  @Field((type) => [Collection])
+  @Field((type) => [Collection], { nullable: true })
   @OneToMany((type) => Collection, (collection) => collection.folder)
   public collections: Collection[];
 
-  // @Field((type) => Folder)
-  // @ManyToOne((type) => Folder, (folder) => folder.folders)
-  // public folder: Folder;
-
-  // @Field((type) => [Folder])
-  // @OneToMany((type) => Folder, (folder) => folder.folder)
-  // public folders: Folder[];
-
-  @Field((type) => Project)
+  @Field((type) => Project, { nullable: true })
   @OneToOne((type) => Project)
   public project: Project;
+  @Field()
+  public projectId: string;
 
+  @Field((type) => [Folder], { nullable: true })
   @TreeChildren({ cascade: true })
   public children: Folder[];
 
+  @Field((type) => Folder, { nullable: true })
   @TreeParent()
   public parent: Folder;
+  @Field()
+  public parentId: string;
 
-  @Field((type) => [Asset])
+  @Field((type) => Int)
+  public childCount: number;
+
+  @Field((type) => [Asset], { nullable: true })
   @OneToMany((type) => Asset, (asset) => asset.folder)
   public assets: Asset[];
 }

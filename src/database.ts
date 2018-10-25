@@ -9,7 +9,7 @@ import * as TypeORM from 'typeorm';
 import * as resolvers from 'app/resolvers';
 import { authChecker } from 'app/utils/auth';
 import { AppError } from 'app/utils/errors';
-import logging from 'app/utils/logging';
+import log from 'app/utils/log';
 
 export async function init(config: TypeORM.ConnectionOptions, server: Hapi.Server): Promise<void> {
   try {
@@ -41,7 +41,7 @@ export async function init(config: TypeORM.ConnectionOptions, server: Hapi.Serve
 
     await apolloServer.installSubscriptionHandlers(server.listener);
 
-    logging.info(`Apollo server registered to server`);
+    log.info(`Apollo server registered to server`);
   } catch (error) {
     throw new AppError('Error initializing database', false, error);
   }

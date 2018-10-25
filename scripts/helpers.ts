@@ -1,4 +1,6 @@
+import log from '../src/utils/log';
+
 export function done(message: string) {
-  console.log(message || 'Done!');
+  log.info(message || 'Done!');
   process.exit(0);
 }

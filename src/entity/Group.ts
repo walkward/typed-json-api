@@ -1,7 +1,8 @@
 import { IsString } from 'class-validator';
 import { Field, ObjectType } from 'type-graphql';
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
 
+import { RelationColumn } from 'app/helpers';
 import { Base } from './Base';
 import { Collection } from './Collection';
 import { Customer } from './Customer';
@@ -15,16 +16,17 @@ export class Group extends Base {
   @IsString()
   public name: string;
 
-  @Field((type) => Collection)
+  @Field((type) => Collection, { nullable: true })
   @OneToMany((type) => Collection, (collection) => collection.group)
   public collections: Collection[];
 
   @Field((type) => [User])
   @ManyToMany((type) => User, (user) => user.groups)
-  @JoinTable()
   public users: User[];
 
   @Field((type) => Customer)
   @ManyToOne((type) => Customer, (customer) => customer.groups)
   public customer: Customer;
+  @RelationColumn()
+  public customerId: string;
 }

@@ -19,11 +19,11 @@ export class Customer extends Base {
   @OneToMany((type) => User, (user) => user.customer)
   public users: User[];
 
-  @Field((type) => [Group])
+  @Field((type) => [Group], { nullable: true })
   @OneToMany((type) => Group, (group) => group.customer)
   public groups: Group[];
 
-  @Field((type) => [Project])
+  @Field((type) => [Project], { nullable: true })
   @OneToMany((type) => Project, (project) => project.customer)
   public projects: Project[];
 }

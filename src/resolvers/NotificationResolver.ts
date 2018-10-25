@@ -1,39 +1,35 @@
-import { Arg, Int, Mutation, PubSub, PubSubEngine, Query, Resolver, Root, Subscription } from 'type-graphql';
+import { Arg, Args, Mutation, PubSub, PubSubEngine, Query, Resolver, Root, Subscription } from 'type-graphql';
 import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 
 import { Notification } from 'app/entity/Notification';
+import { PaginationArgs } from 'app/resolvers/args';
 import { NotificationInput } from 'app/resolvers/inputs';
 
 @Resolver((of) => Notification)
 export class NotificationResolver {
-  constructor(
-    @InjectRepository(Notification) private readonly notificationRepository: Repository<Notification>,
-  ) {}
+  @InjectRepository(Notification)
+  private readonly notificationRepository: Repository<Notification>;
 
   @Query((returns) => Notification, { nullable: true })
-  public notification(@Arg('notificationId', (type) => Int) notificationId: number) {
+  public notification(@Arg('notificationId') notificationId: string): Promise<Notification | undefined> {
     return this.notificationRepository.findOne(notificationId);
   }
 
   @Query((returns) => [Notification])
-  public notifications(): Promise<Notification[]> {
-    return this.notificationRepository.find();
+  public notifications(@Args() { skip, take }: PaginationArgs): Promise<Notification[]> {
+    return this.notificationRepository.find({ skip, take });
   }
 
-  @Mutation((returns) => Notification)
+  @Mutation((returns) => Boolean)
   public async addNotification(
     @Arg('notification') notificationInput: NotificationInput,
-    @Arg('topic') topic: string,
     @PubSub() pubSub: PubSubEngine,
-  ): Promise<Notification> {
-    const notification = this.notificationRepository.create({
-      ...notificationInput,
-    });
-
+  ): Promise<boolean> {
+    const notification = this.notificationRepository.create({ ...notificationInput });
     await this.notificationRepository.save(notification);
-    pubSub.publish(topic, notification);
-    return notification;
+    await pubSub.publish(notification.topic, notification);
+    return true;
   }
 
   @Subscription({
@@ -41,8 +37,8 @@ export class NotificationResolver {
   })
   public newNotification(
     @Arg('topic') topic: string,
-    @Root() notificationPayload: Notification,
+    @Root() notification: Notification,
   ): Notification {
-    return notificationPayload;
+    return notification;
   }
 }

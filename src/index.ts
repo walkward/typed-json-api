@@ -16,11 +16,11 @@ import * as resolvers from 'app/resolvers';
 import * as Server from 'app/server';
 import { authChecker } from 'app/utils/auth';
 import { AppError } from 'app/utils/errors';
-import logging from 'app/utils/logging';
+import log from 'app/utils/log';
 
 export async function start(): Promise<Hapi.Server> {
   try {
-    logging.info(`Running environment ${process.env.NODE_ENV}`);
+    log.info(`Running environment ${process.env.NODE_ENV}`);
 
     // Registering dependencies with typedi
     TypeGraphQL.useContainer(Container);

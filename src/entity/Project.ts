@@ -2,6 +2,7 @@ import { IsString } from 'class-validator';
 import { Field, ObjectType } from 'type-graphql';
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 
+import { RelationColumn } from 'app/helpers';
 import { Base } from './Base';
 import { Customer } from './Customer';
 import { Folder } from './Folder';
@@ -19,16 +20,22 @@ export class Project extends Base {
   @OneToOne((type) => Folder)
   @JoinColumn()
   public folder: Folder;
+  @RelationColumn()
+  public folderId: string;
 
   // @Field((type) => [Folder])
   // @OneToMany((type) => Folder, (folder) => folder.folder)
   // public folders: Folder[];
 
-  @Field((type) => User)
+  @Field((type) => User, { nullable: true })
   @ManyToOne((type) => User, (user) => user.projects)
   public user: User;
+  @RelationColumn()
+  public userId: string;
 
-  @Field((type) => Customer)
+  @Field((type) => Customer, { nullable: true })
   @ManyToOne((type) => Customer, (customer) => customer.projects)
   public customer: Customer;
+  @RelationColumn()
+  public customerId: string;
 }

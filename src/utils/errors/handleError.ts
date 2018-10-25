@@ -1,6 +1,6 @@
 import { AppError } from 'app/utils/errors';
-import logging from 'app/utils/logging';
+import log from 'app/utils/log';
 
 export const handleError = (error: AppError | Error) => {
-  logging.error(error.stack || error.message);
+  log.error(error.stack || error.message);
 };
