@@ -9,7 +9,9 @@ import * as Notifications from 'app/api/notifications';
 export async function init(serverConfigs: IServerConfigurations): Promise<Hapi.Server> {
   try {
     const server = new Hapi.Server({
-      debug: { request: ['error'] },
+      debug: {
+        request: ['error'],
+      },
       port: serverConfigs.port,
       routes: {
         cors: {

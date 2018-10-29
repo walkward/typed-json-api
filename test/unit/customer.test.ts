@@ -19,15 +19,25 @@ test.afterEach(async (t) => {
   await t.context.server.stop();
 });
 
-test('create notification', async (t) => {
-  const notification = {
-    message: 'something',
+test('customer mutation', async (t) => {
+  const payload = {
+    query: `
+      mutation AddCustomer {
+        addCustomer(customer: {
+          name: "New Customer"
+        }) {
+          id
+          name
+        }
+      }
+    `,
   };
 
   const post = await request(t.context.server.listener)
-    .post(`/api/notifications`)
+    .post(`/graphql`)
     .set('Authorization', `Bearer ${t.context.token}`)
-    .send(notification);
+    .set('Accept', 'application/json')
+    .send(payload);
 
-  t.is(post.status, 201, post.body.message);
+  t.is(post.status, 200, post.body.message);
 });

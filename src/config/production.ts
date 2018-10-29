@@ -2,12 +2,12 @@ export const server: any = {
   port: 5000,
   jwtSecret: 'random-secret-password',
   jwtExpiration: '1h',
-  plugins: [ 'logging', 'jwt-auth', 'hapi-qs'],
+  plugins: [ 'logging', /* 'jwt-auth', */ 'hapi-qs'],
 };
 
 export const database: any = {
   host: process.env.POSTGRES_HOST,
-  synchronize: false,
+  synchronize: true,
   cache: {
     type: 'redis',
     options: {

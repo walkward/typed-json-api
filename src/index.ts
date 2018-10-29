@@ -6,6 +6,7 @@ import 'app/utils/errors/uncaught';
 import 'reflect-metadata';
 
 import { ApolloServer } from 'apollo-server-hapi';
+import { RedisPubSub } from 'graphql-redis-subscriptions';
 import * as Hapi from 'hapi';
 import * as TypeGraphQL from 'type-graphql';
 import { Container } from 'typedi';
@@ -17,6 +18,7 @@ import * as Server from 'app/server';
 import { authChecker } from 'app/utils/auth';
 import { AppError } from 'app/utils/errors';
 import log from 'app/utils/log';
+import { pub, sub } from 'app/utils/redis';
 
 export async function start(): Promise<Hapi.Server> {
   try {
@@ -35,8 +37,13 @@ export async function start(): Promise<Hapi.Server> {
 
     // Creating GraphQL schema
     const schema = await TypeGraphQL.buildSchema({
+      emitSchemaFile: true,
       resolvers: Object.values(resolvers),
       authChecker,
+      pubSub: new RedisPubSub({
+        publisher: pub,
+        subscriber: sub,
+      }),
     });
 
     // Initializing Hapi server
@@ -47,11 +54,13 @@ export async function start(): Promise<Hapi.Server> {
       schema,
       debug: true,
       formatError: TypeGraphQL.formatArgumentValidationError,
-      playground: {
-        settings: {
-          'editor.cursorShape': 'line',
-        } as any,
-      },
+      // playground: {
+      //   settings: {
+      //     'editor.cursorShape': 'line',
+      //   } as any,
+      // },
+      playground: true,
+      introspection: true,
       subscriptions: {
         path: '/subscriptions',
       },

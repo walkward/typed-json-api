@@ -1,0 +1,1681 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {
+    "Asset": {
+      "title": "Asset",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "required": true,
+          "title": "id",
+          "arguments": []
+        },
+        "created": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/DateTime",
+              "required": true
+            },
+            {
+              "title": "created"
+            }
+          ]
+        },
+        "modified": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/DateTime",
+              "required": true
+            },
+            {
+              "title": "modified"
+            }
+          ]
+        },
+        "version": {
+          "type": "number",
+          "required": true,
+          "title": "version",
+          "arguments": []
+        },
+        "name": {
+          "type": "string",
+          "required": true,
+          "title": "name",
+          "arguments": []
+        },
+        "location": {
+          "type": "string",
+          "required": true,
+          "title": "location",
+          "arguments": []
+        },
+        "fileType": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/FileTypes",
+              "required": true
+            },
+            {
+              "title": "fileType"
+            }
+          ]
+        },
+        "success": {
+          "type": "boolean",
+          "required": true,
+          "title": "success",
+          "arguments": []
+        },
+        "collections": {
+          "type": "array",
+          "items": {
+            "type": {
+              "$ref": "#/definitions/Collection",
+              "required": true
+            }
+          },
+          "required": true,
+          "title": "collections",
+          "arguments": [
+            {
+              "title": "skip",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            },
+            {
+              "title": "take",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            }
+          ]
+        },
+        "folder": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/Folder",
+              "required": true
+            },
+            {
+              "title": "folder"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "name",
+        "location",
+        "success",
+        "collections"
+      ]
+    },
+    "AssetInput": {
+      "title": "AssetInput",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "required": true,
+          "title": "name"
+        },
+        "location": {
+          "type": "string",
+          "required": true,
+          "title": "location"
+        },
+        "fileType": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/FileTypes",
+              "required": true
+            },
+            {
+              "title": "fileType"
+            }
+          ]
+        },
+        "success": {
+          "type": "boolean",
+          "required": true,
+          "title": "success"
+        },
+        "folderId": {
+          "type": "string",
+          "required": true,
+          "title": "folderId"
+        }
+      },
+      "required": [
+        "name",
+        "location",
+        "success",
+        "folderId"
+      ],
+      "input": true
+    },
+    "Base": {
+      "title": "Base",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "required": true,
+          "title": "id",
+          "arguments": []
+        },
+        "created": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/DateTime",
+              "required": true
+            },
+            {
+              "title": "created"
+            }
+          ]
+        },
+        "modified": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/DateTime",
+              "required": true
+            },
+            {
+              "title": "modified"
+            }
+          ]
+        },
+        "version": {
+          "type": "number",
+          "required": true,
+          "title": "version",
+          "arguments": []
+        }
+      },
+      "required": [
+        "id",
+        "version"
+      ]
+    },
+    "Collection": {
+      "title": "Collection",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "required": true,
+          "title": "id",
+          "arguments": []
+        },
+        "created": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/DateTime",
+              "required": true
+            },
+            {
+              "title": "created"
+            }
+          ]
+        },
+        "modified": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/DateTime",
+              "required": true
+            },
+            {
+              "title": "modified"
+            }
+          ]
+        },
+        "version": {
+          "type": "number",
+          "required": true,
+          "title": "version",
+          "arguments": []
+        },
+        "name": {
+          "type": "string",
+          "required": true,
+          "title": "name",
+          "arguments": []
+        },
+        "assets": {
+          "type": "array",
+          "items": {
+            "type": {
+              "$ref": "#/definitions/Asset",
+              "required": true
+            }
+          },
+          "title": "assets",
+          "arguments": [
+            {
+              "title": "skip",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            },
+            {
+              "title": "take",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            }
+          ]
+        },
+        "folder": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/Folder"
+            },
+            {
+              "title": "folder"
+            }
+          ]
+        },
+        "user": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/User"
+            },
+            {
+              "title": "user"
+            }
+          ]
+        },
+        "group": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/Group"
+            },
+            {
+              "title": "group"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "name"
+      ]
+    },
+    "CollectionInput": {
+      "title": "CollectionInput",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "required": true,
+          "title": "name"
+        },
+        "folderId": {
+          "type": "string",
+          "required": false,
+          "title": "folderId"
+        },
+        "userId": {
+          "type": "string",
+          "required": false,
+          "title": "userId"
+        },
+        "groupId": {
+          "type": "string",
+          "required": false,
+          "title": "groupId"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "input": true
+    },
+    "Customer": {
+      "title": "Customer",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "required": true,
+          "title": "id",
+          "arguments": []
+        },
+        "created": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/DateTime",
+              "required": true
+            },
+            {
+              "title": "created"
+            }
+          ]
+        },
+        "modified": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/DateTime",
+              "required": true
+            },
+            {
+              "title": "modified"
+            }
+          ]
+        },
+        "version": {
+          "type": "number",
+          "required": true,
+          "title": "version",
+          "arguments": []
+        },
+        "name": {
+          "type": "string",
+          "required": true,
+          "title": "name",
+          "arguments": []
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "type": {
+              "$ref": "#/definitions/User",
+              "required": true
+            }
+          },
+          "required": true,
+          "title": "users",
+          "arguments": [
+            {
+              "title": "skip",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            },
+            {
+              "title": "take",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            }
+          ]
+        },
+        "groups": {
+          "type": "array",
+          "items": {
+            "type": {
+              "$ref": "#/definitions/Group",
+              "required": true
+            }
+          },
+          "title": "groups",
+          "arguments": [
+            {
+              "title": "skip",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            },
+            {
+              "title": "take",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            }
+          ]
+        },
+        "projects": {
+          "type": "array",
+          "items": {
+            "type": {
+              "$ref": "#/definitions/Project",
+              "required": true
+            }
+          },
+          "title": "projects",
+          "arguments": [
+            {
+              "title": "skip",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            },
+            {
+              "title": "take",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "name",
+        "users"
+      ]
+    },
+    "CustomerInput": {
+      "title": "CustomerInput",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "required": true,
+          "title": "name"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "input": true
+    },
+    "DateTime": {
+      "title": "DateTime",
+      "type": "GRAPHQL_SCALAR"
+    },
+    "FileTypes": {
+      "title": "FileTypes",
+      "type": "GRAPHQL_ENUM",
+      "enum": [
+        "jpg",
+        "png",
+        "gif"
+      ]
+    },
+    "Folder": {
+      "title": "Folder",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "required": true,
+          "title": "id",
+          "arguments": []
+        },
+        "created": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/DateTime",
+              "required": true
+            },
+            {
+              "title": "created"
+            }
+          ]
+        },
+        "modified": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/DateTime",
+              "required": true
+            },
+            {
+              "title": "modified"
+            }
+          ]
+        },
+        "version": {
+          "type": "number",
+          "required": true,
+          "title": "version",
+          "arguments": []
+        },
+        "name": {
+          "type": "string",
+          "required": true,
+          "title": "name",
+          "arguments": []
+        },
+        "collections": {
+          "type": "array",
+          "items": {
+            "type": {
+              "$ref": "#/definitions/Collection",
+              "required": true
+            }
+          },
+          "title": "collections",
+          "arguments": []
+        },
+        "project": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/Project"
+            },
+            {
+              "title": "project"
+            }
+          ]
+        },
+        "projectId": {
+          "type": "string",
+          "required": true,
+          "title": "projectId",
+          "arguments": []
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "type": {
+              "$ref": "#/definitions/Folder",
+              "required": true
+            }
+          },
+          "title": "children",
+          "arguments": [
+            {
+              "title": "skip",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            },
+            {
+              "title": "take",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            }
+          ]
+        },
+        "parent": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/Folder"
+            },
+            {
+              "title": "parent"
+            }
+          ]
+        },
+        "parentId": {
+          "type": "string",
+          "required": true,
+          "title": "parentId",
+          "arguments": []
+        },
+        "childCount": {
+          "type": "integer",
+          "required": true,
+          "title": "childCount",
+          "arguments": []
+        },
+        "assets": {
+          "type": "array",
+          "items": {
+            "type": {
+              "$ref": "#/definitions/Asset",
+              "required": true
+            }
+          },
+          "title": "assets",
+          "arguments": []
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "name",
+        "projectId",
+        "parentId",
+        "childCount"
+      ]
+    },
+    "FolderInput": {
+      "title": "FolderInput",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "required": true,
+          "title": "name"
+        },
+        "parentId": {
+          "type": "string",
+          "required": false,
+          "title": "parentId"
+        },
+        "projectId": {
+          "type": "string",
+          "required": false,
+          "title": "projectId"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "input": true
+    },
+    "Group": {
+      "title": "Group",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "required": true,
+          "title": "id",
+          "arguments": []
+        },
+        "created": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/DateTime",
+              "required": true
+            },
+            {
+              "title": "created"
+            }
+          ]
+        },
+        "modified": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/DateTime",
+              "required": true
+            },
+            {
+              "title": "modified"
+            }
+          ]
+        },
+        "version": {
+          "type": "number",
+          "required": true,
+          "title": "version",
+          "arguments": []
+        },
+        "name": {
+          "type": "string",
+          "required": true,
+          "title": "name",
+          "arguments": []
+        },
+        "collections": {
+          "type": "array",
+          "items": {
+            "type": {
+              "$ref": "#/definitions/Collection",
+              "required": true
+            }
+          },
+          "title": "collections",
+          "arguments": [
+            {
+              "title": "skip",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            },
+            {
+              "title": "take",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            }
+          ]
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "type": {
+              "$ref": "#/definitions/User",
+              "required": true
+            }
+          },
+          "required": true,
+          "title": "users",
+          "arguments": [
+            {
+              "title": "skip",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            },
+            {
+              "title": "take",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            }
+          ]
+        },
+        "customer": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/Customer",
+              "required": true
+            },
+            {
+              "title": "customer"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "name",
+        "users"
+      ]
+    },
+    "GroupInput": {
+      "title": "GroupInput",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "required": true,
+          "title": "name"
+        },
+        "customerId": {
+          "type": "string",
+          "required": true,
+          "title": "customerId"
+        }
+      },
+      "required": [
+        "name",
+        "customerId"
+      ],
+      "input": true
+    },
+    "Mutation": {
+      "title": "Mutation",
+      "type": "object",
+      "properties": {
+        "addAsset": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/Asset",
+              "required": true
+            },
+            {
+              "title": "addAsset"
+            }
+          ]
+        },
+        "addUser": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/User",
+              "required": true
+            },
+            {
+              "title": "addUser"
+            }
+          ]
+        },
+        "addCustomer": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/Customer",
+              "required": true
+            },
+            {
+              "title": "addCustomer"
+            }
+          ]
+        },
+        "addGroup": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/Group",
+              "required": true
+            },
+            {
+              "title": "addGroup"
+            }
+          ]
+        },
+        "addProject": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/Project",
+              "required": true
+            },
+            {
+              "title": "addProject"
+            }
+          ]
+        },
+        "addCollection": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/Collection",
+              "required": true
+            },
+            {
+              "title": "addCollection"
+            }
+          ]
+        },
+        "addFolder": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/Folder",
+              "required": true
+            },
+            {
+              "title": "addFolder"
+            }
+          ]
+        },
+        "addNotification": {
+          "type": "boolean",
+          "required": true,
+          "title": "addNotification",
+          "arguments": [
+            {
+              "title": "notification",
+              "type": {
+                "$ref": "#/definitions/NotificationInput",
+                "required": true
+              },
+              "defaultValue": null
+            }
+          ]
+        }
+      },
+      "required": [
+        "addNotification"
+      ]
+    },
+    "Notification": {
+      "title": "Notification",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "required": true,
+          "title": "id",
+          "arguments": []
+        },
+        "created": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/DateTime",
+              "required": true
+            },
+            {
+              "title": "created"
+            }
+          ]
+        },
+        "modified": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/DateTime",
+              "required": true
+            },
+            {
+              "title": "modified"
+            }
+          ]
+        },
+        "version": {
+          "type": "number",
+          "required": true,
+          "title": "version",
+          "arguments": []
+        },
+        "message": {
+          "type": "string",
+          "required": true,
+          "title": "message",
+          "arguments": []
+        },
+        "topic": {
+          "type": "string",
+          "required": true,
+          "title": "topic",
+          "arguments": []
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "message",
+        "topic"
+      ]
+    },
+    "NotificationInput": {
+      "title": "NotificationInput",
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "required": true,
+          "title": "message"
+        },
+        "topic": {
+          "type": "string",
+          "required": true,
+          "title": "topic"
+        }
+      },
+      "required": [
+        "message",
+        "topic"
+      ],
+      "input": true
+    },
+    "Project": {
+      "title": "Project",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "required": true,
+          "title": "id",
+          "arguments": []
+        },
+        "created": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/DateTime",
+              "required": true
+            },
+            {
+              "title": "created"
+            }
+          ]
+        },
+        "modified": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/DateTime",
+              "required": true
+            },
+            {
+              "title": "modified"
+            }
+          ]
+        },
+        "version": {
+          "type": "number",
+          "required": true,
+          "title": "version",
+          "arguments": []
+        },
+        "name": {
+          "type": "string",
+          "required": true,
+          "title": "name",
+          "arguments": []
+        },
+        "folder": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/Folder",
+              "required": true
+            },
+            {
+              "title": "folder"
+            }
+          ]
+        },
+        "user": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/User"
+            },
+            {
+              "title": "user"
+            }
+          ]
+        },
+        "customer": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/Customer"
+            },
+            {
+              "title": "customer"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "name"
+      ]
+    },
+    "ProjectInput": {
+      "title": "ProjectInput",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "required": true,
+          "title": "name"
+        },
+        "customerId": {
+          "type": "string",
+          "required": true,
+          "title": "customerId"
+        }
+      },
+      "required": [
+        "name",
+        "customerId"
+      ],
+      "input": true
+    },
+    "Query": {
+      "title": "Query",
+      "type": "object",
+      "properties": {
+        "asset": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/Asset"
+            },
+            {
+              "title": "asset"
+            }
+          ]
+        },
+        "assets": {
+          "type": "array",
+          "items": {
+            "type": {
+              "$ref": "#/definitions/Asset",
+              "required": true
+            }
+          },
+          "required": true,
+          "title": "assets",
+          "arguments": [
+            {
+              "title": "skip",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            },
+            {
+              "title": "take",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            }
+          ]
+        },
+        "user": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/User"
+            },
+            {
+              "title": "user"
+            }
+          ]
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "type": {
+              "$ref": "#/definitions/User",
+              "required": true
+            }
+          },
+          "required": true,
+          "title": "users",
+          "arguments": [
+            {
+              "title": "skip",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            },
+            {
+              "title": "take",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            }
+          ]
+        },
+        "customer": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/Customer"
+            },
+            {
+              "title": "customer"
+            }
+          ]
+        },
+        "customers": {
+          "type": "array",
+          "items": {
+            "type": {
+              "$ref": "#/definitions/Customer",
+              "required": true
+            }
+          },
+          "required": true,
+          "title": "customers",
+          "arguments": [
+            {
+              "title": "skip",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            },
+            {
+              "title": "take",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            }
+          ]
+        },
+        "group": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/Group"
+            },
+            {
+              "title": "group"
+            }
+          ]
+        },
+        "groups": {
+          "type": "array",
+          "items": {
+            "type": {
+              "$ref": "#/definitions/Group",
+              "required": true
+            }
+          },
+          "required": true,
+          "title": "groups",
+          "arguments": [
+            {
+              "title": "skip",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            },
+            {
+              "title": "take",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            }
+          ]
+        },
+        "project": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/Project"
+            },
+            {
+              "title": "project"
+            }
+          ]
+        },
+        "projects": {
+          "type": "array",
+          "items": {
+            "type": {
+              "$ref": "#/definitions/Project",
+              "required": true
+            }
+          },
+          "required": true,
+          "title": "projects",
+          "arguments": [
+            {
+              "title": "skip",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            },
+            {
+              "title": "take",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            }
+          ]
+        },
+        "collection": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/Collection"
+            },
+            {
+              "title": "collection"
+            }
+          ]
+        },
+        "collections": {
+          "type": "array",
+          "items": {
+            "type": {
+              "$ref": "#/definitions/Collection",
+              "required": true
+            }
+          },
+          "required": true,
+          "title": "collections",
+          "arguments": [
+            {
+              "title": "skip",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            },
+            {
+              "title": "take",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            }
+          ]
+        },
+        "folder": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/Folder"
+            },
+            {
+              "title": "folder"
+            }
+          ]
+        },
+        "folders": {
+          "type": "array",
+          "items": {
+            "type": {
+              "$ref": "#/definitions/Folder",
+              "required": true
+            }
+          },
+          "required": true,
+          "title": "folders",
+          "arguments": [
+            {
+              "title": "skip",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            },
+            {
+              "title": "take",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            }
+          ]
+        },
+        "notification": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/Notification"
+            },
+            {
+              "title": "notification"
+            }
+          ]
+        },
+        "notifications": {
+          "type": "array",
+          "items": {
+            "type": {
+              "$ref": "#/definitions/Notification",
+              "required": true
+            }
+          },
+          "required": true,
+          "title": "notifications",
+          "arguments": [
+            {
+              "title": "skip",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            },
+            {
+              "title": "take",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            }
+          ]
+        }
+      },
+      "required": [
+        "assets",
+        "users",
+        "customers",
+        "groups",
+        "projects",
+        "collections",
+        "folders",
+        "notifications"
+      ]
+    },
+    "Subscription": {
+      "title": "Subscription",
+      "type": "object",
+      "properties": {
+        "userSubscription": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/Notification",
+              "required": true
+            },
+            {
+              "title": "userSubscription"
+            }
+          ]
+        },
+        "newNotifications": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/Notification",
+              "required": true
+            },
+            {
+              "title": "newNotifications"
+            }
+          ]
+        }
+      },
+      "required": []
+    },
+    "User": {
+      "title": "User",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "required": true,
+          "title": "id",
+          "arguments": []
+        },
+        "created": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/DateTime",
+              "required": true
+            },
+            {
+              "title": "created"
+            }
+          ]
+        },
+        "modified": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/DateTime",
+              "required": true
+            },
+            {
+              "title": "modified"
+            }
+          ]
+        },
+        "version": {
+          "type": "number",
+          "required": true,
+          "title": "version",
+          "arguments": []
+        },
+        "firstname": {
+          "type": "string",
+          "required": true,
+          "title": "firstname",
+          "arguments": []
+        },
+        "lastname": {
+          "type": "string",
+          "required": true,
+          "title": "lastname",
+          "arguments": []
+        },
+        "email": {
+          "type": "string",
+          "required": true,
+          "title": "email",
+          "arguments": []
+        },
+        "password": {
+          "type": "string",
+          "required": true,
+          "title": "password",
+          "arguments": []
+        },
+        "login": {
+          "type": "string",
+          "required": true,
+          "title": "login",
+          "arguments": []
+        },
+        "groups": {
+          "type": "array",
+          "items": {
+            "type": {
+              "$ref": "#/definitions/Group",
+              "required": true
+            }
+          },
+          "title": "groups",
+          "arguments": [
+            {
+              "title": "skip",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            },
+            {
+              "title": "take",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            }
+          ]
+        },
+        "customer": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/Customer",
+              "required": true
+            },
+            {
+              "title": "customer"
+            }
+          ]
+        },
+        "collections": {
+          "type": "array",
+          "items": {
+            "type": {
+              "$ref": "#/definitions/Collection",
+              "required": true
+            }
+          },
+          "title": "collections",
+          "arguments": [
+            {
+              "title": "skip",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            },
+            {
+              "title": "take",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            }
+          ]
+        },
+        "projects": {
+          "type": "array",
+          "items": {
+            "type": {
+              "$ref": "#/definitions/Project",
+              "required": true
+            }
+          },
+          "title": "projects",
+          "arguments": [
+            {
+              "title": "skip",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            },
+            {
+              "title": "take",
+              "type": {
+                "type": "integer",
+                "required": false
+              },
+              "defaultValue": null
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "firstname",
+        "lastname",
+        "email",
+        "password",
+        "login"
+      ]
+    },
+    "UserInput": {
+      "title": "UserInput",
+      "type": "object",
+      "properties": {
+        "firstname": {
+          "type": "string",
+          "required": true,
+          "title": "firstname"
+        },
+        "lastname": {
+          "type": "string",
+          "required": true,
+          "title": "lastname"
+        },
+        "email": {
+          "type": "string",
+          "required": true,
+          "title": "email"
+        },
+        "password": {
+          "type": "string",
+          "required": true,
+          "title": "password"
+        },
+        "login": {
+          "type": "string",
+          "required": true,
+          "title": "login"
+        },
+        "customerId": {
+          "type": "string",
+          "required": true,
+          "title": "customerId"
+        }
+      },
+      "required": [
+        "firstname",
+        "lastname",
+        "email",
+        "password",
+        "login",
+        "customerId"
+      ],
+      "input": true
+    }
+  }
+}

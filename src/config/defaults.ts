@@ -1,4 +1,4 @@
-import * as database from '../../ormconfig';
+import * as ormconfig from './ormconfig';
 
 export default {
   server: {
@@ -8,6 +8,7 @@ export default {
   },
   redis: {
     host: 'localhost',
+    port: 6379,
   },
-  database,
+  database: ormconfig,
 };

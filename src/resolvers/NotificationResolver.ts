@@ -1,4 +1,4 @@
-import { Arg, Args, Mutation, PubSub, PubSubEngine, Query, Resolver, Root, Subscription } from 'type-graphql';
+import { Arg, Args, Mutation, Publisher, PubSub, Query, Resolver, Root, Subscription } from 'type-graphql';
 import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 
@@ -24,18 +24,18 @@ export class NotificationResolver {
   @Mutation((returns) => Boolean)
   public async addNotification(
     @Arg('notification') notificationInput: NotificationInput,
-    @PubSub() pubSub: PubSubEngine,
+    @PubSub('NOTIFICATIONS') pubSub: Publisher<NotificationInput>,
   ): Promise<boolean> {
     const notification = this.notificationRepository.create({ ...notificationInput });
     await this.notificationRepository.save(notification);
-    await pubSub.publish(notification.topic, notification);
+    await pubSub(notification);
     return true;
   }
 
-  @Subscription({
+  @Subscription((returns) => Notification, {
     topics: ({ args }) => args.topic,
   })
-  public newNotification(
+  public newNotifications(
     @Arg('topic') topic: string,
     @Root() notification: Notification,
   ): Notification {
