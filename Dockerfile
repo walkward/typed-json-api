@@ -4,8 +4,8 @@ FROM node:10-alpine
 WORKDIR /usr/app
 
 # Install dependencies
-COPY package.json .
-RUN npm install --quiet
+COPY package.json yarn.lock ./
+RUN yarn install --silent
 
 # Copy contents of local folder to `WORKDIR`
 COPY . .

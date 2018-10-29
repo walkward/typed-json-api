@@ -1,5 +1,5 @@
 import {
-  Arg, Args, Authorized, FieldResolver, Mutation, PubSub, PubSubEngine, Query, Resolver, Root, Subscription,
+  Arg, Args, Authorized, FieldResolver, Mutation, Publisher, PubSub, Query, Resolver, Root, Subscription,
 } from 'type-graphql';
 import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
@@ -40,11 +40,11 @@ export class UserResolver {
   @Mutation((returns) => User)
   public addUser(
     @Arg('user') userInput: UserInput,
-    @PubSub() pubSub: PubSubEngine,
+    @PubSub() pubSub: Publisher<NotificationInput>,
     ): Promise<User> {
     const user = this.userRepository.create({ ...userInput });
 
-    pubSub.publish(`USERS:${user.customerId}`, {
+    pubSub({
       topic: `USERS:${user.customerId}`,
       message: `User ${user.firstname} ${user.lastname} was created`,
     } as NotificationInput);

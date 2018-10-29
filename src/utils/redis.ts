@@ -1,12 +1,13 @@
-import * as redis from 'redis';
+import * as Redis from 'ioredis';
 
 import { redisConfigs } from 'app/config';
-import { AppError } from 'app/utils/errors';
 
-const client = redis.createClient(redisConfigs());
+const config = Object.assign({
+  retryStrategy: (times: number) => Math.max(times * 100, 3000),
+}, redisConfigs());
 
-client.on('error', (err) => {
-  throw new AppError(err.message, false, err);
-});
+export const redis = new Redis(config);
 
-export default client;
+export const pub = new Redis(config);
+
+export const sub = new Redis(config);

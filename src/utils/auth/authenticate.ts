@@ -3,7 +3,7 @@ import * as JWT from 'jsonwebtoken';
 
 import { serverConfigs } from 'app/config';
 import { AppError } from 'app/utils/errors';
-import redis from 'app/utils/redis';
+import { redis } from 'app/utils/redis';
 
 export const authenticate = () => {
   try {

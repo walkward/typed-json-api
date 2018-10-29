@@ -17,6 +17,7 @@
     "baseUrl": ".",
     "allowJs": true,
     "checkJs": true,
+    "skipLibCheck": true,
     "lib": [
       "esnext.asynciterable",
       "es2015.promise",
@@ -33,7 +34,12 @@
     "typeRoots": [
       "./node_modules/@types",
       "./src/types"
-    ]
+    ],
+    "plugins": [{
+      "name": "ts-graphql-plugin",
+      "schema": "./schema.json",
+      "tag": "gql"
+    }]
   },
   "include": [
     "src/**/*.ts",
