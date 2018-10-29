@@ -15,20 +15,28 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "baseUrl": ".",
+    "allowJs": true,
+    "checkJs": true,
     "lib": [
+      "esnext.asynciterable",
       "es2015.promise",
       "es2017",
       "dom"
     ],
     "paths": {
-      "*": [
-        "node_modules/*",
-        "types/*"
-      ]
+      "app/*": [
+        "src/*",
+        "dist/*"
+      ],
+      "*": [ "src/types/*" ]
     },
+    "typeRoots": [
+      "./node_modules/@types",
+      "./src/types"
+    ]
   },
   "include": [
-    "./**/*.ts"
+    "src/**/*.ts",
   ],
   "exclude": [
     "node_modules"

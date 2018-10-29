@@ -1,6 +1,8 @@
 import { IsAlpha, IsEmail, IsString, Length, Matches } from 'class-validator';
-import { Column, Entity, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
+import { Field, ObjectType } from 'type-graphql';
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
 
+import { RelationColumn } from 'app/helpers';
 import { Base } from './Base';
 import { Collection } from './Collection';
 import { Customer } from './Customer';
@@ -8,15 +10,19 @@ import { Group } from './Group';
 import { Project } from './Project';
 
 @Entity()
+@ObjectType()
 export class User extends Base {
+  @Field()
   @Column({ length: 100 })
   @IsAlpha()
   public firstname: string;
 
+  @Field()
   @Column({ length: 100 })
   @IsAlpha()
   public lastname: string;
 
+  @Field()
   @Column({
     type: 'varchar',
     length: 100,
@@ -25,6 +31,7 @@ export class User extends Base {
   @IsEmail()
   public email: string;
 
+  @Field()
   @Column({ length: 100 })
   @IsString()
   @Length(8, 100)
@@ -34,6 +41,7 @@ export class User extends Base {
   })
   public password: string;
 
+  @Field()
   @Column({
     type: 'varchar',
     length: 100,
@@ -42,15 +50,22 @@ export class User extends Base {
   @Length(6, 100)
   public login: string;
 
+  @Field((type) => [Group], { nullable: true })
   @ManyToMany((type) => Group, (group) => group.collections)
+  @JoinTable()
   public groups: Group[];
 
+  @Field((type) => Customer)
   @ManyToOne((type) => Customer, (customer) => customer.users)
   public customer: Customer;
+  @RelationColumn()
+  public customerId: string;
 
+  @Field((type) => [Collection], { nullable: true })
   @OneToMany((type) => Collection, (collection) => collection.user)
   public collections: Collection[];
 
+  @Field((type) => [Project], { nullable: true })
   @OneToMany((type) => Project, (project) => project.customer)
   public projects: Project[];
 }

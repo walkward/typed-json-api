@@ -1,8 +1,8 @@
 import * as Hapi from 'hapi';
 
-import { IPlugin } from '../../../types';
-import { AppError } from '../../../utils/errors';
-import logging from '../../../utils/logging';
+import { IPlugin } from 'app/types';
+import { AppError } from 'app/utils/errors';
+import log from 'app/utils/log';
 
 const register = async (server: Hapi.Server): Promise<void> => {
   try {
@@ -12,7 +12,7 @@ const register = async (server: Hapi.Server): Promise<void> => {
         reporters: {
           winston: [{
             module: 'good-winston',
-            args: [{ winston: logging }],
+            args: [{ winston: log }],
           }],
         },
       },

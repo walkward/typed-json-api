@@ -1,16 +1,16 @@
 import * as Hapi from 'hapi';
-import * as nconf from 'nconf';
 
-import { IPlugin } from '../../../types';
-import { validate } from '../../../utils/auth';
-import { AppError } from '../../../utils/errors';
+import { serverConfigs } from 'app/config';
+import { IPlugin } from 'app/types';
+import { validate } from 'app/utils/auth';
+import { AppError } from 'app/utils/errors';
 
 const register = async (server: Hapi.Server): Promise<void> => {
   try {
     await server.register(require('hapi-auth-jwt2'));
 
     server.auth.strategy('jwt', 'jwt', {
-      key: nconf.get('server').jwtSecret,
+      key: serverConfigs().jwtSecret,
       validate,
       // Use when username & password are authenticated
       // verifyOptions: {
